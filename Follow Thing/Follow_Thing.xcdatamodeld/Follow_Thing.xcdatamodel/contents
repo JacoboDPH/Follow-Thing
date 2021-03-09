@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="true" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AlarmasUnFT" representedClassName="AlarmasUnFT" syncable="YES" codeGenerationType="class">
+        <attribute name="completado" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="fechaAlarma" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaCreacionAlarma" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="tituloAlarma" optional="YES" attributeType="String"/>
+        <relationship name="followAlarmaSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FollowThing" inverseName="alarmaUnFTSet" inverseEntity="FollowThing"/>
+    </entity>
+    <entity name="FollowThing" representedClassName="FollowThing" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fechaCreacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimaEntrada" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimoUso" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="grupos" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id_FollowThing" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="titulo" optional="YES" attributeType="String"/>
+        <relationship name="alarmaUnFTSet" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AlarmasUnFT" inverseName="followAlarmaSet" inverseEntity="AlarmasUnFT"/>
+        <relationship name="unFollowThingSet" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnFollowThing" inverseName="followThingSet" inverseEntity="UnFollowThing"/>
+    </entity>
+    <entity name="UnFollowThing" representedClassName="UnFollowThing" syncable="YES" codeGenerationType="class">
+        <attribute name="anotaciones" optional="YES" attributeType="String"/>
+        <attribute name="colorAnotacion" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fechaCreacionUnFT" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="foto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="tiempoGuardado" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="tiempoTotal" optional="YES" attributeType="String"/>
+        <relationship name="followThingSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FollowThing" inverseName="unFollowThingSet" inverseEntity="FollowThing"/>
+    </entity>
+    <elements>
+        <element name="FollowThing" positionX="-63" positionY="-18" width="128" height="178"/>
+        <element name="UnFollowThing" positionX="474.4921875" positionY="0.015625" width="128" height="148"/>
+        <element name="AlarmasUnFT" positionX="144" positionY="54" width="128" height="118"/>
+    </elements>
 </model>
