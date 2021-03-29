@@ -775,6 +775,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
             for busquedaAnotacion in 1...unFollowThing.count {
                 if unFollowThing[busquedaAnotacion-1].anotaciones == titulo {
                     unFollowThing[busquedaAnotacion-1].colorAnotacion = colorAnotacion
+                    unFollowThing[busquedaAnotacion-1].fechaUltimaModificacion = Date()
                 }
             }
         }

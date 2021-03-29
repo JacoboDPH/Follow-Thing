@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="AlarmasUnFT" representedClassName="AlarmasUnFT" syncable="YES" codeGenerationType="class">
         <attribute name="completado" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="fechaAlarma" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -11,6 +11,7 @@
         <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fechaCreacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fechaUltimaEntrada" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimaModificacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fechaUltimoUso" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="grupos" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id_FollowThing" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -18,18 +19,44 @@
         <relationship name="alarmaUnFTSet" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AlarmasUnFT" inverseName="followAlarmaSet" inverseEntity="AlarmasUnFT"/>
         <relationship name="unFollowThingSet" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnFollowThing" inverseName="followThingSet" inverseEntity="UnFollowThing"/>
     </entity>
+    <entity name="FollowThingBackup" representedClassName="FollowThingBackup" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fechaCreacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimaSincronizacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimoUso" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id_FollowThing" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="titulo" optional="YES" attributeType="String"/>
+        <relationship name="unFollowThingSetBackup" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnFollowThingBackup" inverseName="followThingBackupSet" inverseEntity="UnFollowThingBackup"/>
+    </entity>
+    <entity name="PendientesEliminar" representedClassName="PendientesEliminar" syncable="YES" codeGenerationType="class">
+        <attribute name="borradoCompleto" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="id_Fecha_UnFollowThing" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id_FollowThing" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
     <entity name="UnFollowThing" representedClassName="UnFollowThing" syncable="YES" codeGenerationType="class">
         <attribute name="anotaciones" optional="YES" attributeType="String"/>
         <attribute name="colorAnotacion" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="fechaCreacionUnFT" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimaModificacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="foto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="tiempoGuardado" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="tiempoTotal" optional="YES" attributeType="String"/>
         <relationship name="followThingSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FollowThing" inverseName="unFollowThingSet" inverseEntity="FollowThing"/>
     </entity>
+    <entity name="UnFollowThingBackup" representedClassName="UnFollowThingBackup" syncable="YES" codeGenerationType="class">
+        <attribute name="anotaciones" optional="YES" attributeType="String"/>
+        <attribute name="colorAnotacion" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fechaCreacionUnFT" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fechaUltimaModificacion" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fotoURL" optional="YES" attributeType="String"/>
+        <relationship name="followThingBackupSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FollowThingBackup" inverseName="unFollowThingSetBackup" inverseEntity="FollowThingBackup"/>
+    </entity>
     <elements>
-        <element name="FollowThing" positionX="-63" positionY="-18" width="128" height="178"/>
-        <element name="UnFollowThing" positionX="474.4921875" positionY="0.015625" width="128" height="148"/>
-        <element name="AlarmasUnFT" positionX="144" positionY="54" width="128" height="118"/>
+        <element name="AlarmasUnFT" positionX="463.9534301757812" positionY="-15.3028564453125" width="128" height="118"/>
+        <element name="FollowThing" positionX="-29.93328857421875" positionY="-243.131591796875" width="128" height="179"/>
+        <element name="FollowThingBackup" positionX="-16.76739501953125" positionY="1.68768310546875" width="128" height="148"/>
+        <element name="PendientesEliminar" positionX="342.6151123046875" positionY="-595.5229644775391" width="128" height="74"/>
+        <element name="UnFollowThing" positionX="406.8966064453125" positionY="-330.6866455078125" width="128" height="149"/>
+        <element name="UnFollowThingBackup" positionX="315.4921264648438" positionY="129.8814086914062" width="128" height="119"/>
     </elements>
 </model>

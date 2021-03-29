@@ -8,6 +8,11 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
+
+enum ProviderTipo: String {
+    case basic
+}
 
 class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegate {
 
@@ -66,14 +71,26 @@ class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegat
         if correo != nil {
             print("El correo electronico del usuario es \(correo!)")
             existeUsuario = true
-            self.btnEntrarRegistarse.setTitle("Salir", for: .normal)
+            self.btnEntrarRegistarse.setTitle("Salir de \(correo)", for: .normal)
         }
-        
+       
     }
     
     public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
          
         
       }
-    
+ 
+    @IBAction func switchGuardarCopiaFireBase(_ sender: Any) {
+        
+        if ((sender as AnyObject).isOn == true) {
+                //Yes
+            
+            let conmutador = ConmutadorFireBaseCoreData.init()
+            conmutador.guardarCompletoDeLocalAFireBase()
+            
+                 } else {
+                   //No
+                 }
+    }
 }

@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import Firebase
+
 class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableViewDataSource, protocoloDelegadoRegistroFT, UITableViewDelegate,UIPopoverControllerDelegate,UIPopoverPresentationControllerDelegate, UINavigationControllerDelegate, VCOrdenarPorDelegado, VCMasFrecuenteDelegado, UNUserNotificationCenterDelegate, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
   
     
@@ -90,8 +92,49 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             self.tablaPrincipal.setContentOffset(offset, animated: false)
             self.tablaPrincipal.reloadData()
         }
+        let conmutador = ConmutadorFireBaseCoreData.init()
         
+
+        
+//        DispatchQueue.background(completion:  {
+//          conmutador.recuperaDatosFireBase()
+//        })
+       
+//        DispatchQueue.background(delay: 0.1, background: {
+//            // do something in background
+//            conmutador.actualizador()
+//        }, completion: {
+//            // when background job finishes, wait 3 seconds and do something in main thread
+//            DispatchQueue.background(delay: 0.1, background: {
+//                // do something in background
+//                conmutador.actualizadorUnFT()
+//            }, completion: {
+//                // when background job finishes, wait 3 seconds and do something in main thread
+//                print("--- HA FINALIZADO LA SINCRONIZACION DE DATOS EN FIREBASE")
+//            })
+//        })
+        DispatchQueue.main.async {
+            conmutador.actualizadorFT()
+            conmutador.actualizadorUnFT()
+            conmutador.actualizadorFotos()
+           }
+//        DispatchQueue.background(background: {
+//
+//            
+//            
+//        }, completion:{
+//
+//            // when background job finished, do something in main thread
+//            print("--- HA FINALIZADO LA SINCRONIZACION DE DATOS EN FIREBASE")
+//        })
+      
+        
+     
     }
+   
+    var followThingTemporal:[FollowThing] = []
+    
+    
     override func viewWillAppear(_ animated: Bool) {
          
         self.tablaPrincipal.ampliaReduce(tamaño: 1.0)
@@ -118,6 +161,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        
+       
     }
     @objc private func batteryLevelChanged(notification: NSNotification){
         print("bateria baja")
@@ -152,6 +197,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         titleView.addGestureRecognizer(longPress)
                                                
     }
+    
+  
     
     var coleccionColoresAbierto:Bool = false
     
@@ -425,6 +472,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         fetchRequest.sortDescriptors = [ordenaPor]
         fetchRequest.predicate = compuestos
         
+        
         fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: contexto, sectionNameKeyPath: nil, cacheName: nil)
         fetchResultController.delegate = self
         
@@ -614,7 +662,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             if colorCategoria == followThing[busqueda-1].color {
                
                 let indexPath = IndexPath(row: busqueda-1, section: 0)
-                tablaPrincipal.scrollToRow(at: indexPath, at: .top, animated: true)
+                tablaPrincipal.scrollToRow(at: indexPath, at: .top, animated: false)
                 break
             }
         }
@@ -866,6 +914,12 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         let botonBorrar = UIContextualAction(style: .destructive, title: "Borrar") { (action, view, handler) in
             
             let contexto = self.conexion()
+            
+//            let pendienteBorrar = PendienteBorrarDB.init()
+//            
+//            pendienteBorrar.guardaPenditeneBorrar(idFollowThing: self.followThing[indexPath.row].id_FollowThing!, idFechaUnFT: self.followThing[indexPath.row].fechaCreacion!, borradoCompleto: true)
+            
+            
             let borrar = self.fetchResultController.object(at: indexPath)
             contexto.delete(borrar)
             

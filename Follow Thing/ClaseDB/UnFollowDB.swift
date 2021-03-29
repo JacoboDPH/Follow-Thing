@@ -9,6 +9,7 @@
 import CoreData
 import UIKit
 
+
 class UnFollowDB {
     
     func guardarNuevoUnFT(anotacion:String, color:Int16, followThingDB:FollowThing)->Bool {

@@ -232,7 +232,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="kuW-FC-cFM">
                                                 <rect key="frame" x="0.0" y="10" width="74" height="553.5"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ocE-U5-qNI">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ocE-U5-qNI">
                                                         <rect key="frame" x="12" y="0.0" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -240,7 +240,7 @@
                                                             <constraint firstAttribute="height" constant="50" id="SXb-Vx-F4g"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yvT-UQ-wI1">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yvT-UQ-wI1">
                                                         <rect key="frame" x="12" y="63" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -248,7 +248,7 @@
                                                             <constraint firstAttribute="width" constant="50" id="QxR-gX-EcT"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VX6-SF-1aK">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VX6-SF-1aK">
                                                         <rect key="frame" x="12" y="126" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -256,7 +256,7 @@
                                                             <constraint firstAttribute="height" constant="50" id="hEU-iz-ghY"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6E-yT-kaK">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I6E-yT-kaK">
                                                         <rect key="frame" x="12" y="189" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -264,7 +264,7 @@
                                                             <constraint firstAttribute="width" constant="50" id="NjD-yz-3oG"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0T5-i5-vJd">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0T5-i5-vJd">
                                                         <rect key="frame" x="12" y="252" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -272,7 +272,7 @@
                                                             <constraint firstAttribute="width" constant="50" id="bIA-lz-Uf2"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epX-DG-aSh">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="epX-DG-aSh">
                                                         <rect key="frame" x="12" y="314.5" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -280,7 +280,7 @@
                                                             <constraint firstAttribute="width" constant="50" id="QxX-ad-oD1"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ba-Qc-54H">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9ba-Qc-54H">
                                                         <rect key="frame" x="12" y="377.5" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -288,7 +288,7 @@
                                                             <constraint firstAttribute="width" constant="50" id="goG-ko-1kt"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Xn-kf-5ay">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Xn-kf-5ay">
                                                         <rect key="frame" x="12" y="440.5" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -296,7 +296,7 @@
                                                             <constraint firstAttribute="height" constant="50" id="uoS-ow-UV7"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Kt-mW-wl6">
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Kt-mW-wl6">
                                                         <rect key="frame" x="12" y="503.5" width="50" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -409,7 +409,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1955.072463768116" y="137.94642857142856"/>
+            <point key="canvasLocation" x="1119" y="104"/>
         </scene>
         <!--Secundaria-->
         <scene sceneID="yGw-hl-h0m">
@@ -1075,7 +1075,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2771.0144927536235" y="136.60714285714286"/>
+            <point key="canvasLocation" x="2049" y="104"/>
         </scene>
         <!--Camara-->
         <scene sceneID="UYr-Ra-HMY">
@@ -1176,7 +1176,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3700.0000000000005" y="137.94642857142856"/>
+            <point key="canvasLocation" x="2877" y="104"/>
         </scene>
         <!--Resultado Camara-->
         <scene sceneID="5nI-nh-B7D">
@@ -1257,7 +1257,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aLH-70-Li5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4521.739130434783" y="137.94642857142856"/>
+            <point key="canvasLocation" x="3670" y="104"/>
         </scene>
         <!--Login-->
         <scene sceneID="IST-Fa-NdL">
@@ -1283,12 +1283,12 @@
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hqF-bp-xWs">
                                                 <rect key="frame" x="0.0" y="46" width="398" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="conntraseña" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dp0-k1-Hpj">
                                                 <rect key="frame" x="0.0" y="95" width="398" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJH-96-pH8">
                                                 <rect key="frame" x="0.0" y="144" width="398" height="30"/>
@@ -1363,7 +1363,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7mA-gi-Lrn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="982.60869565217399" y="-1295.0892857142856"/>
+            <point key="canvasLocation" x="1954" y="-587"/>
         </scene>
         <!--Opiones General-->
         <scene sceneID="K28-z9-LCt">
@@ -1399,6 +1399,9 @@
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B3S-fM-6YK">
                                         <rect key="frame" x="340" y="52" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="switchGuardarCopiaFireBase:" destination="Jj4-gC-bUf" eventType="valueChanged" id="efo-cP-ZXu"/>
+                                        </connections>
                                     </switch>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realiza copia de seguridad en el servicio Firebase de Google. Para ello entra o registrate con un email." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agC-Cy-D4M">
                                         <rect key="frame" x="20" y="99" width="369" height="33.5"/>
@@ -1503,7 +1506,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fst-OV-Xdb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1955" y="-528"/>
+            <point key="canvasLocation" x="1119" y="-587"/>
         </scene>
         <!--Item-->
         <scene sceneID="cUG-F1-9Tl">
@@ -1834,7 +1837,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1046.376811594203" y="939.50892857142856"/>
+            <point key="canvasLocation" x="1119" y="909"/>
         </scene>
         <!--Alarmas-->
         <scene sceneID="KNs-Vr-dOz">
@@ -1975,7 +1978,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1039.1304347826087" y="1609.8214285714284"/>
+            <point key="canvasLocation" x="1119" y="1610"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sdt-mM-RiL">
@@ -2009,7 +2012,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pgu-Dl-DQq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1047.8260869565217" y="137.94642857142856"/>
+            <point key="canvasLocation" x="213" y="104"/>
         </scene>
         <!--Boton Mas Frecuente-->
         <scene sceneID="rrF-lb-9T2">
@@ -2104,7 +2107,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Vo-Ir-8fK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1954" y="955"/>
+            <point key="canvasLocation" x="2048" y="909"/>
         </scene>
         <!--Visor Foto Unica-->
         <scene sceneID="bTJ-Rx-wdI">
@@ -2314,7 +2317,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2770" y="955"/>
+            <point key="canvasLocation" x="2877" y="909"/>
         </scene>
         <!--Visor Fotos Tabla-->
         <scene sceneID="8aT-BF-gv3">
@@ -2397,7 +2400,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dk7-xP-P1i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3700" y="955"/>
+            <point key="canvasLocation" x="3714" y="909"/>
         </scene>
         <!--Alarma Estadistica Color-->
         <scene sceneID="mNc-2p-JYI">
@@ -2874,7 +2877,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4515.9420289855079" y="951.5625"/>
+            <point key="canvasLocation" x="4532" y="909"/>
         </scene>
         <!--Collection View Fotos-->
         <scene sceneID="CPV-2o-Mxr">
@@ -2959,7 +2962,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V6a-ed-YOf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2770" y="1684"/>
+            <point key="canvasLocation" x="2048" y="1610"/>
         </scene>
         <!--Visor Fotos-->
         <scene sceneID="7hA-Yz-jCa">
@@ -3214,11 +3217,11 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3669.5652173913045" y="1671.4285714285713"/>
+            <point key="canvasLocation" x="2877" y="1610"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Feo-5V-haC"/>
+        <segue reference="38W-vf-u2H"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="alarm" catalog="system" width="124" height="128"/>

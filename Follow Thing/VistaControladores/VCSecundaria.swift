@@ -594,6 +594,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             if unFTRespaldo[busqueda-1].anotaciones != nil {
                 if unFTRespaldo[busqueda-1].anotaciones! == anotacionBuscada {
                     unFTRespaldo[busqueda-1].anotaciones = anotacionesEditar
+                    unFTRespaldo[busqueda-1].fechaUltimaModificacion = Date()
                 }
             }
         }
@@ -861,6 +862,10 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         let botonBorrar = UIContextualAction(style: .destructive, title: "Borrar") { [self] (action, view, handler) in
            
+            let pendienteBorrar = PendienteBorrarDB.init()
+            
+            pendienteBorrar.guardaPenditeneBorrar(idFollowThing: followThingDB.id_FollowThing!, idFechaUnFT: unFollowThingActual[indexPath.row].fechaCreacionUnFT!, borradoCompleto: false)
+            
             let titulo = self.unFollowThingActual[indexPath.row].anotaciones!
             self.borrarUnaAnotacion(unaAnotacion: indexPath)
           
@@ -1053,6 +1058,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     func guardarUnaEdicion(){
         
         unFTRespaldo[indiceEditando.row].anotaciones = anotacionesEditar
+        unFTRespaldo[indiceEditando.row].fechaUltimaModificacion = Date()
         if textFieldVistaUno.text == anotacionesEditar {
         actualizarDatos()
             
@@ -1478,6 +1484,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         self.tablaSecundaria.scrollToRow(at: IndexPath(row: unaAnotacion.row, section: 0), at: .top, animated: true)
         
         if unFollowThingActual[unaAnotacion.row].anotaciones != nil {
+            
             self.textFieldVistaUno.text = self.unFollowThingActual[unaAnotacion.row].anotaciones!
             creaMatrizDeAnotacion(unaAnotacion: unFollowThingActual[unaAnotacion.row].anotaciones!,fecha: unFollowThingActual[unaAnotacion.row].fechaCreacionUnFT!)
             

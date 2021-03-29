@@ -175,6 +175,8 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
     
         let contexto = conexion()
         
+        let conmutador = ConmutadorFireBaseCoreData.init()
+        
         if editando == false {
             
             let uuid = UUID()
@@ -188,18 +190,16 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
             entidadFollowThing.id_FollowThing = uuid
             
             do {
+//                *** Guarda en local
                 try contexto.save()
+//                *** Guarda en firenase
+//                conmutador.actualizaFollowThingEnFireBase(followThing: entidadFollowThing)
+                
                 print("Guardado con éxito")
-               
-                
                 var categoriaSeleccionada = UserDefaults.standard.object(forKey:"categoriaSeleccionada") as? [Int]
-                
                 categoriaSeleccionada![seleccionColor] = 1
-                
                 UserDefaults.standard.set(categoriaSeleccionada, forKey: "categoriaSeleccionada")
-                
                 self.delegateVCPrincipal?.actualizaTablaDatosPorId(id: uuid)
-               
                 performSegueToReturnBack()
                 
             } catch let error as NSError {
@@ -217,7 +217,13 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
                 followThingRecibidoEditar = resultado.first
                 followThingRecibidoEditar.titulo = textFieldTitulo.text
                 followThingRecibidoEditar.color = Int16(seleccionColor)
+                followThingRecibidoEditar.fechaUltimaModificacion = Date()
+               
+//                *** Guarda en local
                 try contexto.save()
+//                 *** Guarda en Firebase
+//                conmutador.actualizaFollowThingEnFireBase(followThing: followThingRecibidoEditar)
+                
                 
                 self.delegateVCPrincipal?.actualizaTablaDatos()
                 
@@ -227,6 +233,8 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
                 print("error",error)
             }
         }
+        
+       
         
     }
 //    MARK:- COLLECTION VIEW COLORES
