@@ -301,7 +301,10 @@ class VCVisorFotos: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     @IBAction func swipeCierre(_ sender: Any) {
-        performSegueToReturnBack()
+        if !estaEnModoTeatro(){
+            performSegueToReturnBack()
+        }
+     
     }
     @IBAction func btn03Visor(_ sender: Any) {
         
@@ -339,8 +342,7 @@ class VCVisorFotos: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     @IBAction func accionSalirModoTeatro(_ sender: Any) {
        
-        cierreModoTeatro()
-        
+//        cierreModoTeatro()
         
     }
     func cierreModoTeatro(){

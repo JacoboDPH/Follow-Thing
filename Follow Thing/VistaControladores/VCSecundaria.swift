@@ -120,6 +120,25 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             self.compruebaSiExisteNotificacionIncluida()
         }
         estadoBotonesEntradaTexto(modo: 0)
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(recibeNotificacionDeActualizacion), name: Notification.Name("actualizaTablaUnFollowThing"), object: nil)
+        
+        
+        let conmutador = ConmutadorFireBaseCoreData.init()
+        
+        DispatchQueue.main.async { [self] in
+            
+                   conmutador.descargaTodoUnFTdeFirebase(idFollowThing: followThingDB.id_FollowThing!.uuidString)
+            
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
+                           conmutador.descargaFotosdeFirebase(idFollowThing: followThingDB.id_FollowThing!.uuidString)
+            }
+            
+            
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         
@@ -624,6 +643,11 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     //    MARK:- ANIMACIONES
    
     //    MARK:- FUNCION ENTRE CONTROLADORES
+    @objc func recibeNotificacionDeActualizacion(){
+    
+     recuperaDatos()
+        tablaSecundaria.reloadData()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -866,16 +890,18 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             
             pendienteBorrar.guardaPenditeneBorrar(idFollowThing: followThingDB.id_FollowThing!, idFechaUnFT: unFollowThingActual[indexPath.row].fechaCreacionUnFT!, borradoCompleto: false)
             
-            let titulo = self.unFollowThingActual[indexPath.row].anotaciones!
             self.borrarUnaAnotacion(unaAnotacion: indexPath)
-          
-            if self.recuperaAlarmas() {
-                if self.existenMasAlarmas(titulo: titulo) {
-                    Alarmas.borrarAlarmaDB(tituloAlarma:titulo, alarmaFT: todasAlarmas)
+            
+            if unFollowThingActual[indexPath.row].foto == nil {
+                let titulo = self.unFollowThingActual[indexPath.row].anotaciones!
+
+                if self.recuperaAlarmas() {
+                    if self.existenMasAlarmas(titulo: titulo) {
+                        Alarmas.borrarAlarmaDB(tituloAlarma:titulo, alarmaFT: todasAlarmas)
+                    }
                 }
+                self.estableceAlarmas()
             }
-          self.estableceAlarmas()
-           
         }
         let botonEditar = UIContextualAction(style: .normal, title: "Editar") { (action, view, handler) in
             
@@ -1414,6 +1440,21 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
 //        }
     }
     //    MARK:- FUNCIONES COREDATA
+    func borrarUnFollowThing(unFT:UnFollowThing){
+        var conexion:NSManagedObjectContext
+        
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        conexion = delegate.persistentContainer.viewContext
+            conexion.delete(unFT)
+       
+        do {
+            try conexion.save()
+            
+        } catch let error as NSError {
+            print("Error al borrar comentario : \(error.localizedDescription)")
+        }
+       
+    }
     func conexion()->NSManagedObjectContext{
         
         let delegate = UIApplication.shared.delegate as! AppDelegate

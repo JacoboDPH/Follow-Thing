@@ -15,6 +15,7 @@
 		761CB22224F4A3E6004EFD9C /* VCResultadoCamara.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761CB22124F4A3E6004EFD9C /* VCResultadoCamara.swift */; };
 		761CB22424F65FA9004EFD9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761CB22324F65FA9004EFD9C /* Main.storyboard */; };
 		76258ECC24A1204700EEADB0 /* CollectionViewCellColores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76258ECB24A1204700EEADB0 /* CollectionViewCellColores.swift */; };
+		762E73052611E71300A21792 /* UnFollowThingFireBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762E73042611E71300A21792 /* UnFollowThingFireBase.swift */; };
 		763347342565BE940092008F /* UnFollowDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763347332565BE940092008F /* UnFollowDB.swift */; };
 		764936D7251CA6DA00C5D2A1 /* Fuentes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764936D6251CA6DA00C5D2A1 /* Fuentes.swift */; };
 		7650C8D724ED59D2002FE0C5 /* VCCamara.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7650C8D624ED59D2002FE0C5 /* VCCamara.swift */; };
@@ -67,6 +68,7 @@
 		761CB22124F4A3E6004EFD9C /* VCResultadoCamara.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCResultadoCamara.swift; sourceTree = "<group>"; };
 		761CB22324F65FA9004EFD9C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		76258ECB24A1204700EEADB0 /* CollectionViewCellColores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellColores.swift; sourceTree = "<group>"; };
+		762E73042611E71300A21792 /* UnFollowThingFireBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnFollowThingFireBase.swift; path = ../../../../UnFollowThingFireBase.swift; sourceTree = "<group>"; };
 		763347332565BE940092008F /* UnFollowDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnFollowDB.swift; sourceTree = "<group>"; };
 		764936D6251CA6DA00C5D2A1 /* Fuentes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fuentes.swift; sourceTree = "<group>"; };
 		7650C8D624ED59D2002FE0C5 /* VCCamara.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCCamara.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				76AD97AC25F7C18100D415F8 /* FollowThingFireBase.swift */,
+				762E73042611E71300A21792 /* UnFollowThingFireBase.swift */,
 			);
 			path = Modelos;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				767CB48624999239005B1161 /* AppDelegate.swift in Sources */,
 				7650C8D724ED59D2002FE0C5 /* VCCamara.swift in Sources */,
 				7610480224FB971600E9C9A1 /* VCVisorFotosTabla.swift in Sources */,
+				762E73052611E71300A21792 /* UnFollowThingFireBase.swift in Sources */,
 				76BBF5F424D39F3B00985C6D /* Matrices.swift in Sources */,
 				76664F1324FE29E9000BB5C7 /* VCVisorFotoUnica.swift in Sources */,
 				7610480424FB97AF00E9C9A1 /* TableViewCellVisorFotos.swift in Sources */,

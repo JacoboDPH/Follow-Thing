@@ -87,7 +87,7 @@ class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegat
                 //Yes
             
             let conmutador = ConmutadorFireBaseCoreData.init()
-            conmutador.guardarCompletoDeLocalAFireBase()
+//            conmutador.guardarCompletoDeLocalAFireBase()
             
                  } else {
                    //No

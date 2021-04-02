@@ -114,9 +114,14 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
 //            })
 //        })
         DispatchQueue.main.async {
-            conmutador.actualizadorFT()
-            conmutador.actualizadorUnFT()
-            conmutador.actualizadorFotos()
+
+//            conmutador.subeFTaFirebase()
+//            conmutador.subeFotosAFirebase()
+//            conmutador.subeUnFTaFirebase()
+
+        
+//          conmutador.descargaTodoFTdeFirebase()
+            
            }
 //        DispatchQueue.background(background: {
 //

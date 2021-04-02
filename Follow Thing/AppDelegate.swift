@@ -67,9 +67,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillResignActive(_ application: UIApplication) {
       
-       
+       print("*** entra de background")
     }
     func applicationDidEnterBackground(_ application: UIApplication) {
+        
+        print("***va a background")
        
     }
     // MARK: - Core Data stack
