@@ -43,6 +43,7 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
         etiquetaTituloMasFrecuente.backgroundColor = grisPopOrdenar
         etiquetaTituloMasFrecuente.textColor = .white
         etiquetaTituloMasFrecuente.font = fuentePopover
+        etiquetaTituloMasFrecuente.alpha = 0.9
         etiquetaTituloMasFrecuente.frame = CGRect(x: 0, y: 0, width: Int(medidaAnchoPopover), height: alturaEtiquetaPopover)
         tablaFrecuentes.dataSource = self
         tablaFrecuentes.delegate = self
@@ -50,6 +51,9 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
 //        tablaFrecuentes.isScrollEnabled = false
         
         tablaFrecuentes.frame = CGRect(x: 0, y: CGFloat(alturaEtiquetaPopover), width: view.frame.size.width, height: view.frame.size.height)
+        
+        view.backgroundColor = blancoTransparente
+        view.addBlurEffectFondo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,7 +188,7 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
         cell.etiquetaTituloFrecuente.text = anotacionesFrecuentes[indexPath.row]
         cell.etiquetaTituloFrecuente.text = unFollowThingTop[indexPath.row].anotaciones!
         cell.etiquetaTituloFrecuente.textColor = coloresAnotacion[Int(unFollowThingTop[indexPath.row].colorAnotacion)]
-       
+        cell.backgroundColor = .clear
         return cell
        }
     

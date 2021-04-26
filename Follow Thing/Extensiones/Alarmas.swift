@@ -21,26 +21,30 @@ public class Alarmas {
     
     public static func lanzaNotificacionLocal(titulo:String,subTitulo:String,cuerpo:String, fecha:DateComponents)->UNNotificationRequest{
 
-       
-        
+      
         let lanzador = UNCalendarNotificationTrigger(dateMatching: fecha, repeats: false)
+        
+//        let lanzador = UNTimeIntervalNotificationTrigger(timeInterval: 8.0, repeats: false)
+        
+        let action = UNNotificationAction(identifier: "action", title: "Ir", options: [])
+        
+        let categoria  = UNNotificationCategory(identifier: "categorias", actions: [action], intentIdentifiers: [], options: [])
+        
+        UNUserNotificationCenter.current().setNotificationCategories([categoria])
+        
+       
         
         let contenido = UNMutableNotificationContent()
         contenido.title = titulo
         contenido.subtitle = subTitulo
         contenido.body = cuerpo
         contenido.sound = UNNotificationSound.default
+        contenido.categoryIdentifier = "categorias"
         
         let solicitud = UNNotificationRequest(identifier: "\(titulo):\(subTitulo)", content: contenido, trigger: lanzador)
         
         return solicitud
         
-//        UNUserNotificationCenter.current().add(solicitud, withCompletionHandler: {(error) in
-//            if let error = error {
-//                print("error al lanzar notificacion: ",error)
-//            }
-//        })
-    
     }
     public static func compruebaSiExisteAlarma(){
         
@@ -53,6 +57,7 @@ public class Alarmas {
     }
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert,.sound])
+        
     }
     
     public static func borraTodasAlarmas(){
@@ -65,7 +70,7 @@ public class Alarmas {
     public static func obtenFechaComponenteAlarma(fecha:Date)->DateComponents {
 
         var calendario = Calendar.current
-        calendario.timeZone = TimeZone(identifier: "UTC")!
+        calendario.timeZone = TimeZone.current
         
         let componentes = calendario.dateComponents([.hour, .minute, .month, .day, .year], from: fecha)
         

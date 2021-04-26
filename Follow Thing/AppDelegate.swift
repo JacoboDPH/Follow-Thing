@@ -12,10 +12,50 @@ import UserNotifications
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
+    private func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+
+        print("willPresent")
+        completionHandler([.badge, .alert, .sound])
+    }
+//
+    private func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+
+        print("didReceive")
+        completionHandler()
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("tes")
+//        let sb = UIStoryboard(name: "Main", bundle: nil)
+//        let otherVC = sb.instantiateViewController(withIdentifier: "consejos") as! ConsejosViewController
+//        window?.rootViewController = otherVC;
+        
+    }
+//
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("tes")
+
+//            let sb = UIStoryboard(name: "Main", bundle: nil)
+//            let otherVC = sb.instantiateViewController(withIdentifier: "consejos") as! ConsejosViewController
+//            window?.rootViewController = otherVC;
+    }
+//    private func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//
+//        if response.actionIdentifier == "action" {
+//
+//            for victoria in 1...10 {
+//                print("TOMALOOOOOOOO :::::: ",victoria)
+//            }
+//        }
+//    }
+
+
     func registerForPushNotifications() {
         //1
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
         UNUserNotificationCenter.current()
             //2
             .requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
@@ -33,6 +73,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         registerForPushNotifications()
         
+       
+           
+        // request permission from user to send notification
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { authorized, error in
+            if authorized {
+                UNUserNotificationCenter.current().delegate = self
+                DispatchQueue.main.async(execute: {
+                    application.registerForRemoteNotifications()
+                })
+            }
+        })
+        
+    
+        
         UIApplication.shared.windows.forEach { window in
             window.overrideUserInterfaceStyle = .light
         }
@@ -41,7 +95,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
-   
+//    func userNotificationCenter(
+//      _ center: UNUserNotificationCenter,
+//      didReceive response: UNNotificationResponse,
+//      withCompletionHandler completionHandler: @escaping () -> Void) {
+//      
+//      defer { completionHandler() }
+//
+//      guard response.actionIdentifier ==
+//          UNNotificationDefaultActionIdentifier else {
+//        return
+//      }
+//      print("superPremio=====")
+//      // Perform actions here
+//    }
     @objc func appMovedToBackground() {
         print("App moved to background!")
         
@@ -51,7 +118,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-      
+       
+        
        
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
@@ -63,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
         
-        
+       
     }
     func applicationWillResignActive(_ application: UIApplication) {
       

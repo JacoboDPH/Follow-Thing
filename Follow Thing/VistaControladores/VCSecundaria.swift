@@ -87,6 +87,18 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     var anotacionesFrecuentes:[String] = []
     var unFollowThingTop:[UnFollowThing] = []
     
+    lazy var refreshControl:UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        
+        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
+      
+        refreshControl.addTarget(self, action: #selector(VCSecundaria.sincronizar), for: .valueChanged)
+        refreshControl.tintColor = UIColor.gray
+        
+        return refreshControl
+        
+}()
+    
     //    MARK:- CONSTANTES
     
     let alturaEtiquetaTitulo = 50
@@ -99,6 +111,8 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         self.tablaSecundaria.delegate = self
         self.tablaSecundaria.dataSource = self
+        
+        self.tablaSecundaria.addSubview(self.refreshControl)
         
         self.tablaSecundaria.separatorStyle = UITableViewCell.SeparatorStyle.none
         self.tablaSecundaria.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: contendorOpciones.frame.size.height + contenedorEntradaTexto.frame.size.height, right: 0)
@@ -124,22 +138,11 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(recibeNotificacionDeActualizacion), name: Notification.Name("actualizaTablaUnFollowThing"), object: nil)
         
-        
-        let conmutador = ConmutadorFireBaseCoreData.init()
-        
-        DispatchQueue.main.async { [self] in
-            
-                   conmutador.descargaTodoUnFTdeFirebase(idFollowThing: followThingDB.id_FollowThing!.uuidString)
-            
-            
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [self] in
-                           conmutador.descargaFotosdeFirebase(idFollowThing: followThingDB.id_FollowThing!.uuidString)
-            }
-            
-            
-        }
+       
+     
     }
+
+
     override func viewWillAppear(_ animated: Bool) {
         
         configuraScroll()
@@ -155,7 +158,12 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        sincronizarSubida()
+        
         NotificationCenter.default.removeObserver(self)
+        
+        
       
     }
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -348,11 +356,13 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         view.unblur()
         
         btn01Opciones.layer.removeAllAnimations()
+        compruebaAlarmas()
     }
     func vuelveDeVCEstColAlar() {
         
     
         btn01Opciones.layer.removeAllAnimations()
+        compruebaAlarmas()
     }
     func muestraSeleccionadosDesdeEstadistica(unFollowThingEnvio:UnFollowThing) {
         
@@ -400,6 +410,8 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { [self] in
             
             if recuperaAlarmas() {
+                
+                btn01Opciones.iluminar()
             
             let pulse = CASpringAnimation(keyPath: "transform.scale")
                 pulse.duration = 2.9
@@ -411,6 +423,10 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
                 pulse.damping = 0.8
                 btn01Opciones.layer.add(pulse, forKey: nil)
 
+            }
+            else {
+                btn01Opciones.desiluminar()
+              
             }
         }
     }
@@ -608,12 +624,14 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             modificaAlarmaLocalizda(unaAnotacion: anotacionesEditar)
         }
         
+        let fecha = Date()
+        
         for busqueda in 1...unFTRespaldo.count {
             
             if unFTRespaldo[busqueda-1].anotaciones != nil {
                 if unFTRespaldo[busqueda-1].anotaciones! == anotacionBuscada {
                     unFTRespaldo[busqueda-1].anotaciones = anotacionesEditar
-                    unFTRespaldo[busqueda-1].fechaUltimaModificacion = Date()
+                    unFTRespaldo[busqueda-1].fechaUltimaModificacion = fecha
                 }
             }
         }
@@ -647,6 +665,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     
      recuperaDatos()
         tablaSecundaria.reloadData()
+        refreshControl.endRefreshing()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -886,21 +905,23 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         let botonBorrar = UIContextualAction(style: .destructive, title: "Borrar") { [self] (action, view, handler) in
            
-            let pendienteBorrar = PendienteBorrarDB.init()
             
-            pendienteBorrar.guardaPenditeneBorrar(idFollowThing: followThingDB.id_FollowThing!, idFechaUnFT: unFollowThingActual[indexPath.row].fechaCreacionUnFT!, borradoCompleto: false)
-            
-            self.borrarUnaAnotacion(unaAnotacion: indexPath)
-            
-            if unFollowThingActual[indexPath.row].foto == nil {
-                let titulo = self.unFollowThingActual[indexPath.row].anotaciones!
-
-                if self.recuperaAlarmas() {
-                    if self.existenMasAlarmas(titulo: titulo) {
-                        Alarmas.borrarAlarmaDB(tituloAlarma:titulo, alarmaFT: todasAlarmas)
+            if unFollowThingActual.count > 0 {
+                if unFollowThingActual[indexPath.row].foto == nil {
+                    let titulo = self.unFollowThingActual[indexPath.row].anotaciones!
+                    
+                    if self.recuperaAlarmas() {
+                        if self.existenMasAlarmas(titulo: titulo) {
+                            Alarmas.borrarAlarmaDB(tituloAlarma:titulo, alarmaFT: todasAlarmas)
+                        }
                     }
+                    self.borrarUnaAnotacion(unaAnotacion: indexPath)
+                    self.estableceAlarmas()
                 }
-                self.estableceAlarmas()
+                else {
+                    self.borrarUnaAnotacion(unaAnotacion: indexPath)
+                }
+                
             }
         }
         let botonEditar = UIContextualAction(style: .normal, title: "Editar") { (action, view, handler) in
@@ -1369,6 +1390,64 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
 
               }
     }
+    //    MARK:- SINCRONIZAR
+    @objc private func sincronizar(){
+        
+        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
+        
+        if sincronizacion {
+            let conmutador = ConmutadorEntreRedYLocal.init()
+            
+            let serialQueue = DispatchQueue(label: "com.queueFollowThing.serial")
+            
+            serialQueue.sync {
+                print("Task 5")
+                
+                conmutador.descargaTodoUnFTdeFirebase(idFollowThing: self.followThingDB.id_FollowThing!.uuidString)
+                
+                print("5 is on main thread: \(Thread.isMainThread)")
+            }
+            
+            serialQueue.sync { [self] in
+                 print("Task 6")
+                
+                conmutador.descargaFotosdeFirebase(idFollowThing: followThingDB.id_FollowThing!.uuidString)
+            
+                print("6 is on main thread: \(Thread.isMainThread)")
+                
+                  }
+            serialQueue.sync {
+                
+                print("Task 7")
+                
+                conmutador.lanzadorCargaUNFTFirebase()
+                
+                print("7 is on main thread: \(Thread.isMainThread)")
+                
+            }
+            
+        }
+        else {
+            refreshControl.endRefreshing()
+        }
+    }
+    private func sincronizarSubida(){
+        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
+        
+        if sincronizacion {
+            let conmutador = ConmutadorEntreRedYLocal.init()
+            
+            let serialQueue = DispatchQueue(label: "com.queueFollowThing.serial")
+            
+            serialQueue.sync {
+                print("Task 8")
+                
+                conmutador.lanzadorCargaUNFTFirebase()
+                
+                print("8 is on main thread: \(Thread.isMainThread)")
+            }
+        }
+    }
     //    MARK:- ALARMA
     func borrarAlarmasUnFT(){
         
@@ -1421,14 +1500,16 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         let solicitud =  Alarmas.lanzaNotificacionLocal(titulo: titulo, subTitulo: subTitulo, cuerpo: cuerpo, fecha: fecha)
         
-        UNUserNotificationCenter.current().add(solicitud, withCompletionHandler: {(error) in
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        center.add(solicitud, withCompletionHandler: {(error) in
             if let error = error {
                 print("error al lanzar notificacion: ",error)
             }
         })
         
     }
-    
     func compruebaSiExisteNotificacionIncluida(){
         
        todasAlarmas = Alarmas.leerAlarmaDB(followThing: followThingDB, unFollowThing: unFollowThingActual)

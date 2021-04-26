@@ -43,8 +43,22 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     @IBOutlet weak var indiceBoton08: UIView!
     @IBOutlet weak var indiceBoton09: UIView!
     
+    @IBOutlet weak var botonFlotanteAñadir: UIButton!
+    
+  
     
 //    MARK: - VARIABLES
+    lazy var refreshControl:UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        
+//        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
+//
+        refreshControl.addTarget(self, action: #selector(VCPrincipal.sincronizar), for: .valueChanged)
+        refreshControl.tintColor = UIColor.gray
+        return refreshControl
+        
+}()
+    
     var followThing:[FollowThing] = []
     var followThingFiltrado:[FollowThing] = []
     var fetchResultController : NSFetchedResultsController<FollowThing>!
@@ -54,9 +68,10 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     var indiceEditando = IndexPath()
     var indiceAnotacionFrecuenteDesdeVCPrincipal = IndexPath()
     var alarmaTodasUnFT:[AlarmasUnFT] = []
+    var followThingTemporal:[FollowThing] = []
     
     var incluyeFrecuenteDesdeVCPrincipal:Bool = false
-    
+   
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -67,6 +82,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         
         self.tablaPrincipal.rowHeight = UITableView.automaticDimension;
         self.tablaPrincipal.estimatedRowHeight = UITableView.automaticDimension;
+        
+        self.tablaPrincipal.addSubview(self.refreshControl)
         
         
         NotificationCenter.default.addObserver(
@@ -85,6 +102,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         configuradorIndiceLateral()
         muestraIndiceVisible()
         
+        configInicialBotonFlotante()
+        
         recargaDatos(conAnimacion: true)
         
         DispatchQueue.main.async {
@@ -92,60 +111,35 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             self.tablaPrincipal.setContentOffset(offset, animated: false)
             self.tablaPrincipal.reloadData()
         }
-        let conmutador = ConmutadorFireBaseCoreData.init()
         
-
+       sincronizar()
         
-//        DispatchQueue.background(completion:  {
-//          conmutador.recuperaDatosFireBase()
-//        })
-       
-//        DispatchQueue.background(delay: 0.1, background: {
-//            // do something in background
-//            conmutador.actualizador()
-//        }, completion: {
-//            // when background job finishes, wait 3 seconds and do something in main thread
-//            DispatchQueue.background(delay: 0.1, background: {
-//                // do something in background
-//                conmutador.actualizadorUnFT()
-//            }, completion: {
-//                // when background job finishes, wait 3 seconds and do something in main thread
-//                print("--- HA FINALIZADO LA SINCRONIZACION DE DATOS EN FIREBASE")
-//            })
-//        })
-        DispatchQueue.main.async {
-
-//            conmutador.subeFTaFirebase()
-//            conmutador.subeFotosAFirebase()
-//            conmutador.subeUnFTaFirebase()
-
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(sincronizarFin), name: Notification.Name("actualizaTablaFollowThing"), object: nil)
         
-//          conmutador.descargaTodoFTdeFirebase()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             
-           }
-//        DispatchQueue.background(background: {
-//
-//            
-//            
-//        }, completion:{
-//
-//            // when background job finished, do something in main thread
-//            print("--- HA FINALIZADO LA SINCRONIZACION DE DATOS EN FIREBASE")
-//        })
-      
-        
-     
+            let mostrarIndice = UserDefaults.standard.bool(forKey: "mostrar_Indice_Inicio")
+            if mostrarIndice {
+                self.mostrarIndiceLateral()
+            }
+            
+            let mostrarCategoria = UserDefaults.standard.bool(forKey: "mostrar_Categoria_inicio")
+            if mostrarCategoria {
+                self.muestraSeleccionadorCategoria()
+                
+            }
+        }
     }
-   
-    var followThingTemporal:[FollowThing] = []
-    
-    
+  
     override func viewWillAppear(_ animated: Bool) {
-         
+        
+        super.viewWillAppear(animated)
+        self.view.layoutIfNeeded()
+        self.tablaPrincipal.reloadData()
         self.tablaPrincipal.ampliaReduce(tamaño: 1.0)
         self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:-90)
-        
-        view.layoutIfNeeded()
+       
         
         let ordenGuardado =  UserDefaults.standard.integer(forKey: "ordenGuardado")
         if ordenGuardado == 2 {
@@ -154,7 +148,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         NotificationCenter.default.addObserver(self, selector: #selector(estableceAlarmas), name: UIApplication.willResignActiveNotification, object: nil)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-            
+          
             self.estableceAlarmas()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
@@ -184,7 +178,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     private func initNavigationItemTitleView() {
     
         let titleView = UILabel()
-        titleView.text = "Follow Thing"
+        titleView.text = "Follow Things"
         titleView.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         let width = titleView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).width
         titleView.frame = CGRect(origin:CGPoint.zero, size:CGSize(width: width, height: 500))
@@ -248,9 +242,9 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
 //
 //        self.expandirContenedor(contenedor: self.contenedorColeccionColores, abrir: true, tamaño: 160)
     }
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert,.sound])
-    }
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        completionHandler([.alert,.sound])
+//    }
    
 //    MARK:- IBACTION
     
@@ -291,6 +285,35 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         return .none
     }
 //    MARK:- CONFIGURADORES
+    func configInicialBotonFlotante(){
+       
+        botonFlotanteAñadir.redondoCompleto()
+      
+        botonFlotanteAñadir.sombreaVista()
+        
+        botonFlotanteAñadir.backgroundColor = .gray
+        
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+            pulse.duration = 2.9
+            pulse.fromValue = 1.0
+            pulse.toValue = 1.20
+            pulse.autoreverses = true
+            pulse.repeatCount = .infinity
+            pulse.initialVelocity = 3.5
+            pulse.damping = 0.9
+            botonFlotanteAñadir.layer.add(pulse, forKey: nil)
+        
+     
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 5.8, repeats: false) { timer in
+            
+            if self.followThing.count > 0 {
+            self.botonFlotanteAñadir.layer.removeAllAnimations()
+            }
+        }
+
+
+    }
     func configColeccionColores(){
       
         let flowLayout = UICollectionViewFlowLayout()
@@ -336,34 +359,26 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         
         etiqTituloIndice.text = "Categorías"
         etiqTituloIndice.font = fuenteDiaCell
-        
-        indiceBoton01.redondoCompleto()
-        indiceBoton01.backgroundColor = colores[0]
-        
-        indiceBoton02.redondoCompleto()
-        indiceBoton02.backgroundColor = colores[1]
-        
-        indiceBoton03.redondoCompleto()
-        indiceBoton03.backgroundColor = colores[2]
-        
-        indiceBoton04.redondoCompleto()
-        indiceBoton04.backgroundColor = colores[3]
-        
-        indiceBoton05.redondoCompleto()
-        indiceBoton05.backgroundColor = colores[4]
-        
-        indiceBoton06.redondoCompleto()
-        indiceBoton06.backgroundColor = colores[5]
-        
-        indiceBoton07.redondoCompleto()
-        indiceBoton07.backgroundColor = colores[6]
-        
-        indiceBoton08.redondoCompleto()
-        indiceBoton08.backgroundColor = colores[7]
-        
-        indiceBoton09.redondoCompleto()
-        indiceBoton09.backgroundColor = .clear
-        indiceBoton09.borders(for: [.all], width: 1, color: .black)
+        let botoneria:[UIView] = [indiceBoton01,indiceBoton02,indiceBoton03,indiceBoton04,indiceBoton05,indiceBoton06,indiceBoton07,indiceBoton08,indiceBoton09]
+        for config in 1...botoneria.count {
+            
+            botoneria[config-1].backgroundColor = colores[config-1]
+          
+            
+          
+            if config == botoneria.count {
+                indiceBoton09.borders(for: [.all], width: 0.5, color: .black)
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                botoneria[config-1].redondoCompleto()
+                
+                
+            }
+            
+            
+            
+        }
         
         let gestoIndiceBoton01 = UITapGestureRecognizer(target: self, action:  #selector (self.accionIndiceBoton01 (_:)))
             self.indiceBoton01.addGestureRecognizer(gestoIndiceBoton01)
@@ -411,6 +426,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             }
         }
     }
+   
+     
     //    MARK:- FUNCIONES ENTRE CONTROLADORES
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -547,11 +564,16 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
        
     }
 //    MARK:- FUNCIONES INDICE LATERAL
+    func mostrarIndiceLateral(){
+        self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:0)
+        self.tablaPrincipal.ampliaReduce(tamaño: 0.8)
+        
+    }
     
     @IBAction func swipeIndiceLateral(_ sender: Any) {
           
-        self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:0)
-        self.tablaPrincipal.ampliaReduce(tamaño: 0.8)
+    mostrarIndiceLateral()
+       
     }
     @objc func accionIndiceBoton01(_ sender:UITapGestureRecognizer){
         self.posicionaTablaEnCategoria(colorCategoria: Int16(0))
@@ -667,7 +689,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             if colorCategoria == followThing[busqueda-1].color {
                
                 let indexPath = IndexPath(row: busqueda-1, section: 0)
-                tablaPrincipal.scrollToRow(at: indexPath, at: .top, animated: false)
+                tablaPrincipal.scrollToRow(at: indexPath, at: .top, animated: true)
                 break
             }
         }
@@ -771,6 +793,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:-90)
             self.tablaPrincipal.ampliaReduce(tamaño: 1.0)
           
+            botonFlotanteAñadir.layer.removeAllAnimations()
         }
     }
     @objc func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -845,6 +868,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCellPrincipal
         let followThingIND = followThing[indexPath.row]
         
@@ -862,9 +887,23 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         cell.etiquetaDia.text = Fechas.creaStringDias(numeroDia: dias, numeroDiaInvertido: 0, forzarDia: true)       
         cell.etiquetaUltimaVez.text = fechaUltimaAnotacion
         
+        let alarmaDB = AlarmaDB.init()
+        let alarmas = alarmaDB.recuperarAlarmas(followThing: followThing[indexPath.row])
+        
+        cell.btnAlarma.isHidden = true
+        
+        if alarmas.count > 0 {
+            cell.btnAlarma.isHidden = false
+        }
+        
+        
         return cell
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCellPrincipal
+        
+        
              
         if animacionRecargaTabla  {
             let animation = Animator.AnimationFactory.makeMoveUpWithBounce(rowHeight: cell.frame.height, duration: 1.0, delayFactor: 0.05)
@@ -951,21 +990,75 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         return configuration
     }
 //    MARK:- ALARMA
-    
     func lanzaNotificacion(titulo:String,subTitulo:String,cuerpo:String, fecha:DateComponents){
         
+       
         let solicitud = Alarmas.lanzaNotificacionLocal(titulo: titulo, subTitulo: subTitulo, cuerpo: cuerpo, fecha: fecha)
         
-        UNUserNotificationCenter.current().add(solicitud, withCompletionHandler: {(error) in
+        
+
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        center.add(solicitud, withCompletionHandler: {(error) in
             if let error = error {
                 print("error al lanzar notificacion: ",error)
             }
         })
         
         Alarmas.compruebaSiExisteAlarma()
+    }
+   
+//    MARK:- SINCRONIZAR
+    @objc func sincronizar(){
+        
+        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
+        
+        if sincronizacion {
+           
+            
+            let conmutador02 = ConmutadorEntreRedYLocal.init()
+            
+            
+            let serialQueue = DispatchQueue(label: "com.queueFollowThing.serial")
+
+            serialQueue.sync {
+                print("Task 1")
+                conmutador02.lanzadorCargaFirebase()
+                print("1 is on main thread: \(Thread.isMainThread)")
+            }
+
+            serialQueue.sync {
+                print("Task 2")
+                conmutador02.lanzadorCargaUNFTFirebase()
+                print("2 is on main thread: \(Thread.isMainThread)")
+            }
+
+            serialQueue.sync {
+                print("Task 3")
+                conmutador02.lanzadorFotoFT()
+                
+                print("3 is on main thread: \(Thread.isMainThread)")
+            }
+            serialQueue.sync {
+                print("Task 4")
+                conmutador02.descargaTodoFTdeFirebase()
+                
+                print("4 is on main thread: \(Thread.isMainThread)")
+            }
+       
+        }
+        else {
+            refreshControl.endRefreshing()
+        }
+    }
+    @objc func sincronizarFin(){
         
         
-    }    //    MARK: - COREDATA
+        refreshControl.endRefreshing()
+        
+    }
+    //    MARK: - COREDATA
     func conexion()->NSManagedObjectContext{
         
         let delegate = UIApplication.shared.delegate as! AppDelegate
@@ -1031,9 +1124,6 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             var titulo:String = ""
             
             let fetch:NSFetchRequest<FollowThing> = FollowThing.fetchRequest()
-           
-           
-                
                     
             for busqueda in 1...self.followThing.count {
                 

@@ -37,7 +37,7 @@ let azulBotonEditar:UIColor =  UIColor(red: 113/255, green: 133/255, blue: 150/2
 
 let rojoBotonEditar:UIColor = UIColor(red: 237/255, green: 28/255, blue: 35/255, alpha: 1)
 
-let grisPopOrdenar:UIColor = UIColor(red: 59/255, green: 68/255, blue: 75/255, alpha: 1)
+let grisPopOrdenar:UIColor = UIColor(red: 59/255, green: 68/255, blue: 75/255, alpha: 0.95)
 
 let botonActivo:UIColor = UIColor(red: 103/255, green: 103/255, blue: 103/255, alpha: 1)
 
@@ -52,6 +52,7 @@ let colorFondoContenedores:UIColor =  UIColor(red: 235/255, green: 235/255, blue
 let colorFondoTituloContenedores:UIColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1.0)
 
 let colorTituloCabecera:UIColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1.0)
+let blancoTransparente:UIColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.1)
 
 var colores:[UIColor] = [
     
@@ -68,19 +69,23 @@ var colores:[UIColor] = [
 var coloresAnotacion:[UIColor] = [
 
     UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),
-    UIColor(red: 0/255, green: 254/255, blue: 206/255, alpha: 1),
-    UIColor(red: 68/255, green: 214/255, blue: 44/255, alpha: 1),
-    UIColor(red: 255/255, green: 233/255, blue: 0/255, alpha: 1),
-    UIColor(red: 255/255, green: 170/255, blue: 77/255, alpha: 1),
+    UIColor(red: 229/255, green: 22/255, blue: 22/255, alpha: 1),
+    UIColor(red: 229/255, green: 67/255, blue: 22/255, alpha: 1),
+    UIColor(red: 240/255, green: 86/255, blue: 9/255, alpha: 1),
+    UIColor(red: 240/255, green: 144/255, blue: 9/255, alpha: 1),
     
-    UIColor(red: 255/255, green: 114/255, blue: 118/255, alpha: 1),
-    UIColor(red: 255/255, green: 62/255, blue: 181/255, alpha: 1),
-    UIColor(red: 0/255, green: 183/255, blue: 150/255, alpha: 1),
-    UIColor(red: 227/255, green: 232/255, blue: 41/255, alpha: 1),
-    UIColor(red: 255/255, green: 214/255, blue: 53/255, alpha: 1),
+    UIColor(red: 240/255, green: 203/255, blue: 9/255, alpha: 1),
+    UIColor(red: 150/255, green: 219/255, blue: 5/255, alpha: 1),
+    UIColor(red: 5/255, green: 219/255, blue: 140/255, alpha: 1),
+    UIColor(red: 7/255, green: 202/255, blue: 192/255, alpha: 1),
+    UIColor(red: 7/255, green: 49/255, blue: 202/255, alpha: 1),
     
-    UIColor(red: 255/255, green: 143/255, blue: 108/255, alpha: 1),
-    UIColor(red: 255/255, green: 95/255, blue: 162/255, alpha: 1)]
+    UIColor(red: 126/255, green: 7/255, blue: 202/255, alpha: 1),
+    UIColor(red: 202/255, green: 7/255, blue: 183/255, alpha: 1)
+    ,
+    UIColor(red: 202/255, green: 7/255, blue: 122/255, alpha: 1),
+    UIColor(red: 223/255, green: 47/255, blue: 95/255, alpha: 1),
+    UIColor(red: 205/255, green: 0/255, blue: 8/255, alpha: 1)]
 
 //let attrString(string:String) = NSAttributedString(
 //    string: <#String#>, attributes: [

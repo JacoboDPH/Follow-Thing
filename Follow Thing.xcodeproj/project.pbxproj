@@ -33,6 +33,8 @@
 		767CB4952499923B005B1161 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 767CB4932499923B005B1161 /* LaunchScreen.storyboard */; };
 		767CB49E249A4065005B1161 /* VCRegistroFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767CB49D249A4065005B1161 /* VCRegistroFT.swift */; };
 		76880A0725482759008BADB9 /* Alarmas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76880A0625482758008BADB9 /* Alarmas.swift */; };
+		768AB02D261E1B7700525BB3 /* ConmutadorEntreRedYLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768AB02C261E1B7700525BB3 /* ConmutadorEntreRedYLocal.swift */; };
+		768AB030261E2CFF00525BB3 /* CRUDFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768AB02F261E2CFF00525BB3 /* CRUDFirebase.swift */; };
 		769578B024E0816D00B8C82F /* TableViewCellSecundarfia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769578AF24E0816D00B8C82F /* TableViewCellSecundarfia.swift */; };
 		76AD97AD25F7C18100D415F8 /* FollowThingFireBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AD97AC25F7C18100D415F8 /* FollowThingFireBase.swift */; };
 		76AFAB3625714F7600DD6E7E /* ColeccionColoresCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AFAB3525714F7600DD6E7E /* ColeccionColoresCell.swift */; };
@@ -88,6 +90,8 @@
 		767CB4962499923B005B1161 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		767CB49D249A4065005B1161 /* VCRegistroFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCRegistroFT.swift; sourceTree = "<group>"; };
 		76880A0625482758008BADB9 /* Alarmas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarmas.swift; sourceTree = "<group>"; };
+		768AB02C261E1B7700525BB3 /* ConmutadorEntreRedYLocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConmutadorEntreRedYLocal.swift; path = ../../../../ConmutadorEntreRedYLocal.swift; sourceTree = "<group>"; };
+		768AB02F261E2CFF00525BB3 /* CRUDFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CRUDFirebase.swift; path = ../../../../CRUDFirebase.swift; sourceTree = "<group>"; };
 		769578AF24E0816D00B8C82F /* TableViewCellSecundarfia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCellSecundarfia.swift; sourceTree = "<group>"; };
 		76AD97AC25F7C18100D415F8 /* FollowThingFireBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowThingFireBase.swift; path = ../../../../FollowThingFireBase.swift; sourceTree = "<group>"; };
 		76AFAB3025714F4C00DD6E7E /* Follow Thing-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Follow Thing-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -243,6 +247,8 @@
 				763347332565BE940092008F /* UnFollowDB.swift */,
 				76D4AC1A25F823F600E9E6DE /* ConmutadorFireBaseCoreData.swift */,
 				76D467AF25FD353D00E06558 /* PendienteBorrarDB.swift */,
+				768AB02C261E1B7700525BB3 /* ConmutadorEntreRedYLocal.swift */,
+				768AB02F261E2CFF00525BB3 /* CRUDFirebase.swift */,
 			);
 			path = ClaseDB;
 			sourceTree = "<group>";
@@ -394,6 +400,7 @@
 				767CB48A24999239005B1161 /* ViewController.swift in Sources */,
 				7650C8DB24F08EF9002FE0C5 /* TableViewCellFrecuentes.swift in Sources */,
 				76F4B1EC24A351A0008E921E /* Fechas.swift in Sources */,
+				768AB030261E2CFF00525BB3 /* CRUDFirebase.swift in Sources */,
 				76F4B1F024AAC98E008E921E /* TableViewCellPrincipal.swift in Sources */,
 				767CB49024999239005B1161 /* Follow_Thing.xcdatamodeld in Sources */,
 				767CB48624999239005B1161 /* AppDelegate.swift in Sources */,
@@ -422,6 +429,7 @@
 				760572BA250E369700A33F73 /* VCCollectionViewFotos.swift in Sources */,
 				76D8554A25F2B46C007FEFBB /* VCOpionesGeneral.swift in Sources */,
 				76F31CBC254D8E4200DA2108 /* TableViewCellAlarmas.swift in Sources */,
+				768AB02D261E1B7700525BB3 /* ConmutadorEntreRedYLocal.swift in Sources */,
 				76BBF5F224C0F3BD00985C6D /* VCOrdenarPor.swift in Sources */,
 				76258ECC24A1204700EEADB0 /* CollectionViewCellColores.swift in Sources */,
 			);
@@ -563,7 +571,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 452PHW8KA6;
 				INFOPLIST_FILE = "Follow Thing/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -572,6 +581,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.JacoboDHP.Follow-Thing";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Follow Things Production";
 				SWIFT_OBJC_BRIDGING_HEADER = "Follow Thing/ModelosCell/Follow Thing-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -585,7 +595,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Jacobo Diego Pita Hernandez (452PHW8KA6)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 452PHW8KA6;
 				INFOPLIST_FILE = "Follow Thing/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -594,6 +605,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.JacoboDHP.Follow-Thing";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Follow Things Production";
 				SWIFT_OBJC_BRIDGING_HEADER = "Follow Thing/ModelosCell/Follow Thing-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

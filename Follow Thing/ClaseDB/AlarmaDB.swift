@@ -42,7 +42,29 @@ func compruebaFechaExcedida(alarmas:[AlarmasUnFT],followThing:FollowThing,unFoll
     
     return alarmasUnFTCompletada
 }
-
+    public func recuperarAlarmas(followThing:FollowThing)->[AlarmasUnFT]{
+        
+        var todasAlarmas:[AlarmasUnFT] = []
+        
+        let fetch:NSFetchRequest<FollowThing> = FollowThing.fetchRequest()
+        fetch.predicate = NSPredicate (format: "%K == %@", #keyPath(FollowThing.id_FollowThing),followThing.id_FollowThing! as CVarArg)
+        
+        var conexion:NSManagedObjectContext
+        
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        conexion = delegate.persistentContainer.viewContext
+        
+        do {
+            let resultado = try conexion.fetch(fetch)
+            let followThingDB = resultado.first
+            todasAlarmas = (followThingDB?.alarmaUnFTSet?.sortedArray(using: [NSSortDescriptor(key: "fechaAlarma", ascending: true)])) as! [AlarmasUnFT]
+        } catch let error as NSError {
+            print("Error al recuperar DB de Alarma:",error)
+        }
+        
+        return todasAlarmas
+        
+    }
 public func leerAlarmaDB(followThing:FollowThing, unFollowThing:[UnFollowThing])->[AlarmasUnFT] {
     
     var todasAlarmas:[AlarmasUnFT] = []

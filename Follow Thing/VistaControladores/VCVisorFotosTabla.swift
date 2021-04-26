@@ -129,8 +129,8 @@ class VCVisorFotosTabla: UIViewController, UITableViewDataSource, UITableViewDel
       
         let indexDB = matrizFotos[indexPath.row]
 
-        let dia = Fechas.calculaDiasEntreDosFechas(start: followThingDBRecibido.fechaCreacion!, end: indexDB.fechaCreacionUnFT!)
-        let diaInvertido = Fechas.calculaDiasEntreDosFechas(start: followThingDBRecibido.fechaCreacion!, end: Date()) - dia
+//        let dia = Fechas.calculaDiasEntreDosFechas(start: followThingDBRecibido.fechaCreacion!, end: indexDB.fechaCreacionUnFT!)
+//        let diaInvertido = Fechas.calculaDiasEntreDosFechas(start: followThingDBRecibido.fechaCreacion!, end: Date()) - dia
         
         cell.fotoVisor.image = UIImage(data: indexDB.foto! as Data)
 //        cell.etiquetaDia.text = Fechas.creaStringDias(numeroDia: dia, numeroDiaInvertido: diaInvertido, desdeHace: desdeHace)

@@ -17,23 +17,18 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
     func muestraSeleccionadosDesdeEstadistica(unFollowThingEnvio: UnFollowThing) {
         
     }
-    
-   
 //    MARK: - PROTOCOLO DE CLASE : VCAlarmaEstadisticaColor
     func actualizaDatos(nuevoElemento: Bool) {
         
     }
-    
     func vuelveDeVCEstColAlar() {
         
         recargaDatos()
         tablaAlarmas.reloadData()
     }
-    
-   
-    
 //  MARK:- IBOULETS
     @IBOutlet var tablaAlarmas: UITableView!
+    @IBOutlet weak var control: UISegmentedControl!
     
 //    MARK:- VARIABLES
     var followThings:[FollowThing] = []
@@ -53,13 +48,17 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addBlurEffectFondo()
-         view.backgroundColor = UIColor.white.withAlphaComponent(0.7)
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.7)
         tablaAlarmas.backgroundColor = .clear
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         recargaDatos()
+        
+        if datos[0].count == 0 && datos[1].count > 0{
+            control.selectedSegmentIndex = 1
+        }
     }
     
     //    MARK:-CONFIGURADORES INICIALES
@@ -120,11 +119,11 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
             }
         }
         
-        if datos[0].count == 0 {
-            datos[0].append(contentsOf: seccionEnCurso)
-            datos[1].removeAll()
-            
-        }
+//        if datos[0].count == 0 {
+//            datos[0].append(contentsOf: seccionEnCurso)
+//            datos[1].removeAll()
+//
+//        }
         
     }
     //    MARK:- METODOS DE CLASE
@@ -138,6 +137,7 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
         
         let dia = Fechas.calculaDiasEntreDosFechas(start: Date(), end: fecha)
         
+        
         if dia == -1 {
             diaString = "Ayer"
         }
@@ -149,10 +149,10 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
             diaString = "En \(dia) días"
         }
         if dia < 0 {
-            diaString = "Hace \(dia) días"
+            diaString = "Hace \(abs(dia)) días"
         }
         
-        fechaString = "\(diaString) - \(hora):"+ceroIzquierda
+        fechaString = "\(diaString) a las \(hora):"+ceroIzquierda
         
         return fechaString
     }
@@ -162,6 +162,11 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
         
         delegado?.vuelveDeVCAlarma()
         performSegueToReturnBack()
+    }
+    
+    @IBAction func control(_ sender: Any) {
+        recargaDatos()
+        tablaAlarmas.reloadData()
     }
     //    MARK:- GESTOS
     @IBAction func deslizarAbajo(_ sender: Any) {
@@ -173,8 +178,8 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
     @IBAction func tapContenedorEtiquetas(_ sender:AnyObject) {
         
         let row = sender.view.tag % 1000
-        let section = sender.view.tag / 1000
-        let titulo = datos[section][row].tituloAlarma!
+       
+        let titulo = datos[control.selectedSegmentIndex][row].tituloAlarma!
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let VCAlarEstColor = storyboard.instantiateViewController(identifier: "VCAlarmaEstadisticaColor") as! VCAlarmaEstadisticaColor
@@ -193,7 +198,7 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
         let row = sender.view.tag % 1000
         let section = sender.view.tag / 1000
       
-        let titulo = datos[section][row].tituloAlarma!
+        let titulo = datos[control.selectedSegmentIndex][row].tituloAlarma!
         
         Alarmas.borrarAlarmaDB(tituloAlarma: titulo, alarmaFT: todasAlarmas)
         
@@ -206,26 +211,25 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
     //    MARK:- TABLA
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-        return datos[section].count
+        return datos[control.selectedSegmentIndex].count
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if datos[0].count > 0 && datos[1].count > 0 {
-            return datos.count
-        }
-        
+//        if datos[0].count > 0 && datos[1].count > 0 {
+//            return datos.count
+//        }
+//
         return 1
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let index = datos[indexPath.section][indexPath.row]
-        
+   
         
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCellAlarmas", for: indexPath) as! TableViewCellAlarmas
         
-        let alarmasIndex = datos[indexPath.section][indexPath.row]
+        let alarmasIndex = datos[control.selectedSegmentIndex][indexPath.row]
         
         
         cell.etiquetaTituloAlarma.text = alarmasIndex.tituloAlarma!
@@ -251,23 +255,7 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
 
         return cell
     }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        if datos[0].count > 0 && datos[1].count > 0 {
-            if section < datos.count {
-                return titulosCabecera[section]
-            }
-        }
-        if seccionExceidas.count > 0 && seccionEnCurso.count == 0 {
-            return titulosCabecera[0]
-        }
-        if seccionEnCurso.count > 0 && seccionExceidas.count == 0 {
-            return titulosCabecera [1]
-        }
-       
-        
-          return nil
-    }
+    
 //    MARK:- COREDATA
     func conexion()->NSManagedObjectContext{
         

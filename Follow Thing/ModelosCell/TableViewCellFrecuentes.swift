@@ -11,8 +11,8 @@ import UIKit
 class TableViewCellFrecuentes: UITableViewCell {
 
     @IBOutlet var etiquetaTituloFrecuente: UILabel!
-    
     @IBOutlet var puntoView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -20,6 +20,10 @@ class TableViewCellFrecuentes: UITableViewCell {
           
         puntoView.backgroundColor = .black
         puntoView.redondoCompleto()
+   
+        contentView.backgroundColor = .clear
+        etiquetaTituloFrecuente.backgroundColor = .clear
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

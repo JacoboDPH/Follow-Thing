@@ -16,6 +16,7 @@ class TableViewCellPrincipal: UITableViewCell {
     @IBOutlet var etiquetaDia: UILabel!
     @IBOutlet var etiquetaUltimaVez: UILabel!
     @IBOutlet var iconoColor: UIView!
+    @IBOutlet weak var btnAlarma: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

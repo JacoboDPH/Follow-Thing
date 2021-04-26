@@ -207,8 +207,6 @@ class VCVisorFotoUnica: UIViewController, UIScrollViewDelegate, delegadoVisorFot
         let puntoAB =  (botonTearto.frame.origin.y) - (etiquetaDiaSubtitulo.frame.origin.y + etiquetaDiaSubtitulo.frame.size.height)
         medidasFoto = CGRect(x: 0, y: etiquetaDiaSubtitulo.frame.origin.y + etiquetaDiaSubtitulo.frame.size.height + 5, width: UIScreen.main.bounds.size.width, height: puntoAB - 20)
         
-        
-        
     
         fotoA.frame = medidasFoto
         fotoB.frame = CGRect(x: -UIScreen.main.bounds.size.width/2, y: 0, width: medidasFoto.size.width, height: medidasFoto.size.height)

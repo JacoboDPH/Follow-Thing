@@ -58,7 +58,11 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         configuraBotonFlash()
 
       
-                fotoPatronEncendido = false
+        if matrizFotos.count > 0 {
+            fotoPatronEncendido = UserDefaults.standard.bool(forKey: "fotoPatron")
+           compruebaEstadoBotonFotoPatron()
+        }
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -320,6 +324,8 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         if matrizFotos.count > 0 {
         
         compruebaEstadoBotonFotoPatron()
+            UserDefaults.standard.set(fotoPatronEncendido, forKey: "fotoPatron")
+            
             let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         botonPatronFoto.superRebotar()
@@ -334,6 +340,7 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         botonPatronFoto.backgroundColor = .clear
         fotoPatron.desiluminar()
         fotoPatronEncendido = false
+           
         }
         else {
             
