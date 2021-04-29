@@ -17,7 +17,10 @@ let fuentePopoverGrande = UIFont(name: "HelveticaNeue-CondensedBlack", size: 76)
 let fuentePopoverGrandeSubtitulo = UIFont(name: "HelveticaNeue-CondensedBlack", size: 56)
 let fuenteTablaAnotaciones = UIFont(name: "HelveticaNeue-Light", size: 22)
 let fuenteBotonGuardar = UIFont(name: "HelveticaNeue-CondensedBlack", size: 26)
+
 let fuenteCellSecundario = UIFont(name: "HelveticaNeue-Light", size: 20)
+
+
 let fuenteCellVisorFotoDia = UIFont(name: "HelveticaNeue-ExtraLight", size: 38)
 let fuenteVisorTitulo = UIFont(name: "HelveticaNeue-CondensedBlack", size: 42)
 let fuenteVistorSubtitulo =  UIFont(name: "HelveticaNeue-CondensedBlack", size: 32)
@@ -25,11 +28,12 @@ let fuenteTextView = UIFont(name: "HelveticaNeue-Light", size: 26)
 let fuenteContendorInformativoGrande = UIFont(name: "HelveticaNeue-Light", size: 42)
 let fuenteCeldaInteriorCollection = UIFont(name: "HelveticaNeue-Light", size: 20)
 let fuenteTextField = UIFont(name: "HelveticaNeue-Light", size: 18)
+
 //MARK:- FUENTES CELL SECUNDARIO
-let fuenteTextoAnotacionesCell = UIFont(name: "HelveticaNeue-Heavy", size: 22)
-let fuenteTextoAnotacionesCellNegrita = UIFont(name: "HelveticaNeue-Black", size: 24)
+let fuenteTextoAnotacionesCell = UIFont(name: "HelveticaNeue-Heavy", size: 36)
+let fuenteTextoAnotacionesCellNegrita = UIFont(name: "HelveticaNeue-Black", size: 36)
 let fuenteDiaCell =  UIFont(name: "HelveticaNeue-Light", size: 16)
-let fuenteDiaHoraCell =   UIFont(name: "HelveticaNeue-Light", size: 10)
+let fuenteDiaHoraCell =   UIFont(name: "HelveticaNeue-Light", size: 12)
 
 let fuenteTextoAnotacionesCellTitulo = UIFont(name: "HelveticaNeue-ThinBlack", size: 40)
 extension NSMutableAttributedString  {

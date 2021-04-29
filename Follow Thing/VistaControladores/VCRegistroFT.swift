@@ -20,13 +20,12 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
 //    MARK:- IBOULETS
     
     @IBOutlet var collectionViewColores: UICollectionView!
-    @IBOutlet var collectionViewIcono: UICollectionView!
-    @IBOutlet var pageControl: UIPageControl!
+   
     @IBOutlet var scrollViewInicial: UIScrollView!
     @IBOutlet var vistaColorIcono: UIView!
     @IBOutlet var vistaTitulo: UIView!
     @IBOutlet var vistaColores: UIView!
-    @IBOutlet var vistaIcono: UIView!
+   
     @IBOutlet var textFieldTitulo: UITextField!
     @IBOutlet var etiquetaTItulo: UILabel!
     @IBOutlet var etiquetaColores: UILabel!
@@ -44,10 +43,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let angle = CGFloat.pi/2
-        pageControl.transform = CGAffineTransform(rotationAngle:angle)
-        
-        
+       
         if editando == true {
             
            editando(editando: editando)
@@ -58,7 +54,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
         if editando == false {
           
             botonGuardar.isHidden = true
-            pageControl.alpha = 0
+           
         }
         self.hideKeyboardWhenTappedAround()        
    
@@ -84,7 +80,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
         scrollViewInicial.isScrollEnabled = true
         scrollViewInicial.isPagingEnabled = true
         
-        scrollViewInicial.contentSize = CGSize(width: self.scrollViewInicial.frame.width, height: self.scrollViewInicial.frame.height*2)
+//        scrollViewInicial.contentSize = CGSize(width: self.scrollViewInicial.frame.width, height: self.scrollViewInicial.frame.height*2)
         
         scrollViewInicial.alpha = 0
         scrollViewInicial.isHidden = false
@@ -100,31 +96,20 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
         
         if page == 0 { textFieldTitulo.becomeFirstResponder()}
         
-        let scrollPoint = CGPoint(x :0 , y: Int(scrollViewInicial.frame.size.height)*page)
+        let scrollPoint = CGPoint(x :0 , y: vistaColores.frame.origin.y)
         scrollViewInicial.setContentOffset(scrollPoint, animated: true)
-        pageControl.currentPage = Int(page)
+       
 
     }
     func configuracionVistasScrollView() {
         
-        vistaIcono.frame.size = scrollViewInicial.frame.size
-        vistaTitulo.frame.size = scrollViewInicial.frame.size
-        vistaColores.frame.size = scrollViewInicial.frame.size
-       
-        vistaTitulo.frame.origin.y = 0
-        vistaColores.frame.origin.y = scrollViewInicial.frame.size.height
-        vistaIcono.frame.origin.y = scrollViewInicial.frame.size.height*2
-        
-        vistaIcono.isHidden = true
-        
-        pageControl.addTarget(self, action: #selector(self.changePage(sender:)), for: UIControl.Event.valueChanged)
         
     }
     func configuraVistaColores() {
         
         let colorAleatorio = Int.random(in: 0..<8)
         
-        if editando == false { vistaColorIcono.cambiarColor(color: colores[Int(colorAleatorio)])
+        if editando == false { vistaColorIcono.cambiarColor(color: coloresCategoria[Int(colorAleatorio)])
             seleccionColor = colorAleatorio
         }
         else {
@@ -137,8 +122,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
 //    MARK : VISTA ICONOS
     func configuraVistaIconos() {
         
-        etiquetaIcono.frame = CGRect(x: 20, y: 0, width: vistaIcono.frame.size.width-40, height: 40)
-        collectionViewIcono.frame = CGRect(x: 20, y: etiquetaIcono.frame.size.height+10, width: scrollViewInicial.frame.width-40, height: scrollViewInicial.frame.size.height-etiquetaIcono.frame.size.height-20)
+       
     }
     //    MARK:- VISTA TITULO
     func configuraVistaTitulo() {
@@ -175,7 +159,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
     
         let contexto = conexion()
         
-        let conmutador = ConmutadorFireBaseCoreData.init()
+//        let conmutador = ConmutadorFireBaseCoreData.init()
         
         if editando == false {
             
@@ -245,12 +229,12 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
         cell.vistaCeldaColores.layer.borderColor = UIColor.gray.cgColor
         
         
-        vistaColorIcono.cambiarColor(color: colores[indexPath.row])
+        vistaColorIcono.cambiarColor(color: coloresCategoria[indexPath.row])
         seleccionColor = indexPath.row
         
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return colores.count
+        return coloresCategoria.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -258,7 +242,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
         
         if collectionView == collectionViewColores {
             
-            cell.vistaCeldaColores.backgroundColor = colores[indexPath.row]
+            cell.vistaCeldaColores.backgroundColor = coloresCategoria[indexPath.row]
             
             if indexPath.row == 8 {
                 cell.vistaCeldaColores.layer.borderWidth = 2.0
@@ -307,7 +291,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
             
             textFieldTitulo.text = followThingRecibidoEditar.titulo!
             etiquetaTItulo.text = followThingRecibidoEditar.titulo!
-            vistaColorIcono.backgroundColor = colores[Int(followThingRecibidoEditar.color)]
+            vistaColorIcono.backgroundColor = coloresCategoria[Int(followThingRecibidoEditar.color)]
             pasoVistaColores()
             botonGuardar.setTitle("Modificar ", for: .normal)
             botonGuardar.backgroundColor = azulBotonEditar
@@ -318,8 +302,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
     }
 //    MARK:- FUNCIONES DE PASO A COLORES
     @IBAction func accionTapIconoColor(_ sender: Any) {
-       
-        pageControl.iluminar()
+    
         pasoVistaColores()
         cambioPaginaScrollView(page: 1)
         dismissKeyboard()
@@ -337,8 +320,7 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
         if (textFieldTitulo.text != "")  {
             
             botonGuardar.isHidden = false
-            pageControl.isHidden = false
-            pageControl.iluminar()
+          
             
             if editando == false {
             cambioPaginaScrollView(page: 1)
@@ -353,21 +335,16 @@ class VCRegistroFT: UIViewController, UIScrollViewDelegate, UITextFieldDelegate,
     
     func configuracionPageControl() {
         
-        if editando == false {  self.pageControl.alpha = 0 }
-        self.pageControl.numberOfPages = 2
-        self.pageControl.currentPage = 0
+        if editando == false {
+      
     }
    
-    @objc func changePage(sender: AnyObject) -> () {
-        
-        let y = CGFloat(pageControl.currentPage) * scrollViewInicial.frame.size.height
-        scrollViewInicial.setContentOffset(CGPoint(x:0, y:y), animated: true)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
 
         let pageNumber = round(scrollView.contentOffset.y / scrollViewInicial.frame.size.height)
-        pageControl.currentPage = Int(pageNumber)
+       
         
         if Int(pageNumber) == 0 { textFieldTitulo.becomeFirstResponder()} else {
              textFieldTitulo.resignFirstResponder()

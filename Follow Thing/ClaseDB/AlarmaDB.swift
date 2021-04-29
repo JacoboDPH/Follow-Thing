@@ -88,7 +88,7 @@ public func leerAlarmaDB(followThing:FollowThing, unFollowThing:[UnFollowThing])
     return todasAlarmas
 }
 public func compruebaAlarmaIncluida(unFT:[UnFollowThing],alarmaFT:[AlarmasUnFT],followThing:FollowThing)->[AlarmasUnFT] {
-    var existe:Bool = false
+//    var existe:Bool = false
     
     var alarmasUnFTCompletada:[AlarmasUnFT] = []
    
@@ -110,7 +110,7 @@ public func compruebaAlarmaIncluida(unFT:[UnFollowThing],alarmaFT:[AlarmasUnFT],
                         if fechaAnotacion != nil && fechaAlarma != nil {
                             
                             if fechaAnotacion! > fechaAlarma! {
-                                existe = true
+//                                existe = true
                                 
                                 print("YA SE PUEDE BORRAR ESTA ALARMA:",alarmaFT[busquedaAlarma-1].tituloAlarma!)
                                 

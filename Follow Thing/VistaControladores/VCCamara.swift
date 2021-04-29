@@ -67,7 +67,12 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        configuraBotonCamara()
+        checkCameraPermission()
+       
+        
+        AVCaptureDevice.authorizeVideo(completion: { (status) in
+            self.configuraBotonCamara()
+        })
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -111,6 +116,8 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         navigationController?.navigationBar.shadowImage = nil
+        
+        view.layoutIfNeeded()
         
     }
 //    MARK:- CONFIGURACIONES
@@ -199,7 +206,7 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
       
         captureSession.sessionPreset = AVCaptureSession.Preset.photo
         
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .unspecified)
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera,.builtInDualWideCamera], mediaType: AVMediaType.video, position: .back)
         
         for device in deviceDiscoverySession.devices {
             if device.position == .back {
@@ -244,7 +251,10 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
 //    MARK:- FLASH
     @IBAction func accionFlash(_ sender: Any) {
       
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
+//        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
+   
+        
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera,.builtInDualCamera,.builtInDualWideCamera], mediaType: AVMediaType.video, position: .back)
 
            guard let device = deviceDiscoverySession.devices.first
                else {return}
@@ -411,6 +421,66 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         self.present(popVC, animated: true, completion: nil)
        
     }
+    
+    func checkCameraPermission() {
+
+        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+        switch authorizationStatus {
+
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: AVMediaType.video) { [weak self](granted) in
+                if granted {
+                    print("access granted")
+                    DispatchQueue.main.async { [weak self] in
+                        self?.startSceneViewSession()
+                    }
+
+                } else {
+                    print("access denied")
+                    DispatchQueue.main.async { [weak self] in
+                        self?.alertUserCameraPermissionMustBeEnabled()
+                    }
+                }
+            }
+
+        case .authorized:
+            print("Access authorized")
+            startSceneViewSession()
+
+        case .denied, .restricted:
+            print("restricted")
+            alertUserCameraPermissionMustBeEnabled()
+
+        @unknown default:
+            fatalError()
+        }
+    }
+
+    func alertUserCameraPermissionMustBeEnabled() {
+
+        let message = "Camera access is necessary to use Augemented Reality for this app.\n\nPlease go to Settings to allow access to the Camera.\n Please switch the button to the green color."
+
+        let alert = UIAlertController (title: "Camera Access Required", message: message, preferredStyle: .alert)
+
+        let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (_) in
+                })
+            }
+        })
+
+        alert.addAction(settingsAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    // this is for ARKit
+    func startSceneViewSession() {
+       
+    }
 //    MARK:- FUNCIONES ENTRE CONTROLADORES
     func cierraPopover(){
            
@@ -444,7 +514,48 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         }
     }
 }
+extension AVCaptureDevice {
+    enum AuthorizationStatus {
+        case justDenied
+        case alreadyDenied
+        case restricted
+        case justAuthorized
+        case alreadyAuthorized
+        case unknown
+    }
 
+    class func authorizeVideo(completion: ((AuthorizationStatus) -> Void)?) {
+        AVCaptureDevice.authorize(mediaType: AVMediaType.video, completion: completion)
+    }
+
+    class func authorizeAudio(completion: ((AuthorizationStatus) -> Void)?) {
+        AVCaptureDevice.authorize(mediaType: AVMediaType.audio, completion: completion)
+    }
+
+    private class func authorize(mediaType: AVMediaType, completion: ((AuthorizationStatus) -> Void)?) {
+        let status = AVCaptureDevice.authorizationStatus(for: mediaType)
+        switch status {
+        case .authorized:
+            completion?(.alreadyAuthorized)
+        case .denied:
+            completion?(.alreadyDenied)
+        case .restricted:
+            completion?(.restricted)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: mediaType, completionHandler: { (granted) in
+                DispatchQueue.main.async {
+                    if granted {
+                        completion?(.justAuthorized)
+                    } else {
+                        completion?(.justDenied)
+                    }
+                }
+            })
+        @unknown default:
+            completion?(.unknown)
+        }
+    }
+}
 
 
 

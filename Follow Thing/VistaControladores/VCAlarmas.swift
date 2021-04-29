@@ -29,6 +29,7 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
 //  MARK:- IBOULETS
     @IBOutlet var tablaAlarmas: UITableView!
     @IBOutlet weak var control: UISegmentedControl!
+    @IBOutlet weak var contenedorTitulo: UIView!
     
 //    MARK:- VARIABLES
     var followThings:[FollowThing] = []
@@ -59,6 +60,8 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
         if datos[0].count == 0 && datos[1].count > 0{
             control.selectedSegmentIndex = 1
         }
+        
+        propiedades(contened: contenedorTitulo, alphaTop: 0.3, puntos: [.bottom])
     }
     
     //    MARK:-CONFIGURADORES INICIALES
@@ -196,7 +199,7 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
     @IBAction func tapBtn01(_ sender:AnyObject) {
         
         let row = sender.view.tag % 1000
-        let section = sender.view.tag / 1000
+//        let section = sender.view.tag / 1000
       
         let titulo = datos[control.selectedSegmentIndex][row].tituloAlarma!
         
@@ -265,5 +268,12 @@ class VCAlarmas: UIViewController, UITableViewDelegate, UITableViewDataSource, P
     func recargaDatosAlarmas(){
         
     }
-    
+//    MARK:- METODOS UTILES
+    func propiedades(contened:UIView,alphaTop:Float,puntos:UIRectEdge){
+     
+        contened.addBlurEffectFondo()
+        contened.backgroundColor = UIColor.lightGray.withAlphaComponent(0.50)
+        contened.borders(for: [puntos], width: 0.5, color: UIColor.darkGray.withAlphaComponent(CGFloat(alphaTop)))
+        
+    }
 }

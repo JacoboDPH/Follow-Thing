@@ -79,7 +79,7 @@ class VCLogin: UIViewController, UITextFieldDelegate {
               
             } else {
                 if (error?.localizedDescription) != nil {
-                    print("ERROR INICIO SESION FIREBASE:",error?.localizedDescription)
+//                    print("ERROR INICIO SESION FIREBASE:",error?.localizedDescription)
                     self.erroresDeAutenticacion(error: error?.localizedDescription)
                 
                 } else {
@@ -97,7 +97,7 @@ class VCLogin: UIViewController, UITextFieldDelegate {
                 self.performSegueToReturnBack()
             } else {
                 if (error?.localizedDescription) != nil {
-                    print("ERROR REGISTRO FIREBASE",error?.localizedDescription)
+//                    print("ERROR REGISTRO FIREBASE",error?.localizedDescription)
                     self.erroresDeAutenticacion(error: error?.localizedDescription)
                 } else {
                     print("error en codigo")

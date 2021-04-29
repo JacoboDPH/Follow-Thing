@@ -41,7 +41,7 @@ let grisPopOrdenar:UIColor = UIColor(red: 59/255, green: 68/255, blue: 75/255, a
 
 let botonActivo:UIColor = UIColor(red: 103/255, green: 103/255, blue: 103/255, alpha: 1)
 
-let colorTextfieldFondo:UIColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1)
+let colorTextfieldFondo:UIColor = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 0.5)
 
 let colorTextDiaCell:UIColor = UIColor(red: 103/255, green: 103/255, blue: 103/255, alpha: 1)
 
@@ -54,7 +54,7 @@ let colorFondoTituloContenedores:UIColor = UIColor(red: 220/255, green: 220/255,
 let colorTituloCabecera:UIColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1.0)
 let blancoTransparente:UIColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.1)
 
-var colores:[UIColor] = [
+var coloresCategoria:[UIColor] = [
     
     UIColor(red: 199/255, green: 206/255, blue: 234/255, alpha: 1),
     UIColor(red: 255/255, green: 65/255, blue: 65/255, alpha: 1),

@@ -141,6 +141,11 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:-90)
        
         
+        
+        self.navigationController?.navigationBar.barTintColor = .white
+               self.navigationController?.navigationBar.tintColor = UIColor.darkGray
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+        
         let ordenGuardado =  UserDefaults.standard.integer(forKey: "ordenGuardado")
         if ordenGuardado == 2 {
             tablaPrincipal.scrollToRow(at: IndexPath(row: 0, section: 0), at: .bottom, animated: true)
@@ -305,7 +310,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         
      
         
-        let timer = Timer.scheduledTimer(withTimeInterval: 5.8, repeats: false) { timer in
+           Timer.scheduledTimer(withTimeInterval: 5.8, repeats: false) { timer in
             
             if self.followThing.count > 0 {
             self.botonFlotanteAñadir.layer.removeAllAnimations()
@@ -362,7 +367,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         let botoneria:[UIView] = [indiceBoton01,indiceBoton02,indiceBoton03,indiceBoton04,indiceBoton05,indiceBoton06,indiceBoton07,indiceBoton08,indiceBoton09]
         for config in 1...botoneria.count {
             
-            botoneria[config-1].backgroundColor = colores[config-1]
+            botoneria[config-1].backgroundColor = coloresCategoria[config-1]
           
             
           
@@ -650,7 +655,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return colores.count
+        return coloresCategoria.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -664,7 +669,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
       
         if categoriaSeleccionada?[indexPath.row] == 1 {
             
-            cell.contenedor.backgroundColor = colores[indexPath.row]
+            cell.contenedor.backgroundColor = coloresCategoria[indexPath.row]
         }
         else {
             cell.contenedor.backgroundColor = .clear
@@ -676,7 +681,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         }
         else {
             cell.contentView.layer.borderWidth = 2.5
-            cell.contentView.layer.borderColor = colores[indexPath.row].cgColor
+            cell.contentView.layer.borderColor = coloresCategoria[indexPath.row].cgColor
         }
         return cell
     }
@@ -882,7 +887,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         }      
         
         cell.etiquetaTitulo.text = followThingIND.titulo
-        cell.iconoColor.backgroundColor = colores[Int(followThingIND.color)]
+        cell.iconoColor.backgroundColor = coloresCategoria[Int(followThingIND.color)]
         
         cell.etiquetaDia.text = Fechas.creaStringDias(numeroDia: dias, numeroDiaInvertido: 0, forzarDia: true)       
         cell.etiquetaUltimaVez.text = fechaUltimaAnotacion
@@ -1147,7 +1152,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
                     
                     for alarma in 1...self.alarmaTodasUnFT.count {
                         
-                        print("Alarma lanzada en principal: ",self.followThing[busqueda-1].titulo,self.alarmaTodasUnFT[alarma-1].fechaAlarma,self.alarmaTodasUnFT[alarma-1].tituloAlarma)
+//                        print("Alarma lanzada en principal: ",self.followThing[busqueda-1].titulo,self.alarmaTodasUnFT[alarma-1].fechaAlarma,self.alarmaTodasUnFT[alarma-1].tituloAlarma)
                         
                         self.lanzaNotificacion(titulo: titulo, subTitulo: self.alarmaTodasUnFT[alarma-1].tituloAlarma!, cuerpo: "Recuerda incluir esta anotación", fecha: Alarmas.obtenFechaComponenteAlarma(fecha: self.alarmaTodasUnFT[alarma-1].fechaAlarma!))
                     }

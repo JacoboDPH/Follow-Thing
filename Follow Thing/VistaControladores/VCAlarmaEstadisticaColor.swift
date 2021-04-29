@@ -173,7 +173,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         pickerAlarma.delegate = self
         
         etiquetaTituloAlarma.font = fuenteTituloContendores
-        etiquetaTituloAlarma.text = "Recordar"
+        etiquetaTituloAlarma.text = "Recordar en..."
         etiquetaTituloAlarma.backgroundColor = .clear
         etiquetaTituloAlarma.textColor = .darkGray
         
@@ -209,7 +209,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
                 
         etiquetaTituloColor.font = fuenteTituloContendores
         
-        etiquetaTituloColor.text = "Color anotación"
+        etiquetaTituloColor.text = "Color anotación..."
         etiquetaTituloColor.backgroundColor = .clear
         etiquetaTituloColor.textColor = .darkGray
         
@@ -233,7 +233,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         
        
         etiquetaTituloEstadistica.font = fuenteTituloContendores
-        etiquetaTituloEstadistica.text = "Estadísticas"
+        etiquetaTituloEstadistica.text = "Estadísticas..."
         etiquetaTituloEstadistica.backgroundColor = .clear
         etiquetaTituloEstadistica.textColor = .darkGray
 
@@ -1041,7 +1041,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         
         
         fechaAlarmaDB =  NSCalendar.current.date(from: fechaDeAlarma)!
-        print("Preparacion Alarma: ",fechaAlarmaDB)
+       
     }
     
     //    MARK: - FUNCIONES COREDATA

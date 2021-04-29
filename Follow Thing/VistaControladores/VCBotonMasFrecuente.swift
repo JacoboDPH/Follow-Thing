@@ -72,7 +72,7 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
             etiquetaTituloMasFrecuente.text = followThingRecibido?.titulo
             
             etiquetaTituloMasFrecuente.textColor = .white
-            etiquetaTituloMasFrecuente.backgroundColor = colores[Int(followThingRecibido!.color)]
+            etiquetaTituloMasFrecuente.backgroundColor = coloresCategoria[Int(followThingRecibido!.color)]
             
             if Int(followThingRecibido!.color) == 8 {
                 

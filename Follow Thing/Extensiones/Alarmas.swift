@@ -176,7 +176,7 @@ public class Alarmas {
                                 
                                 existe = true
                                 
-                                print("YA SE PUEDE BORRAR ESTA ALARMA:",alarmaFT[busquedaAlarma-1].tituloAlarma)
+//                                print("YA SE PUEDE BORRAR ESTA ALARMA:",alarmaFT[busquedaAlarma-1].tituloAlarma)
                                 
                             }
                         }

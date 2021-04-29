@@ -34,7 +34,9 @@ class TableViewCellSecundarfia: UITableViewCell {
         etiqHoraGuardada.backgroundColor = .clear
         etiqContenidoCelda.backgroundColor = .clear
         selectionStyle = .none
-        contentView.redondearVista()
+        
+      
+        
           
     }
     override func setSelected(_ selected: Bool, animated: Bool) {

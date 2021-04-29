@@ -104,6 +104,8 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     let alturaEtiquetaTitulo = 50
     let alturaEtiquetaTiempo = 30
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,7 +116,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         self.tablaSecundaria.addSubview(self.refreshControl)
         
-        self.tablaSecundaria.separatorStyle = UITableViewCell.SeparatorStyle.none
+      
         self.tablaSecundaria.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: contendorOpciones.frame.size.height + contenedorEntradaTexto.frame.size.height, right: 0)
         
         configuraVistasScroll()
@@ -138,16 +140,19 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(recibeNotificacionDeActualizacion), name: Notification.Name("actualizaTablaUnFollowThing"), object: nil)
         
-       
+     
      
     }
 
 
     override func viewWillAppear(_ animated: Bool) {
         
+        super.viewWillAppear(true)
+        
         configuraScroll()
         recuperaDatos()
         tablaSecundaria.reloadData()
+        ajustaSeparadorTabla()
         
         compruebaAlarmas()
         
@@ -155,6 +160,24 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         NotificationCenter.default.addObserver(self, selector: #selector(tecladoAparece), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(estableceAlarmas), name: UIApplication.willResignActiveNotification, object: nil)
         
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),NSAttributedString.Key.foregroundColor: UIColor.black]
+        
+      
+        if followThingDB.color != 8 {
+        
+        let colorCategoria = coloresCategoria[Int(followThingDB.color)]
+        self.navigationController?.navigationBar.barTintColor = colorCategoria
+               self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        navigationItem.title = followThingDB?.titulo
+        
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+       
+        }
+        
+      
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -265,6 +288,8 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     }
     func configuraContenedorEntradaTexto(){
         
+        textFieldVistaUno.backgroundColor = colorTextfieldFondo
+        
         propiedades(contened: contenedorEntradaTexto, alphaTop: 0.30, puntos: [.top])
         btn02EntradaTexto.backgroundColor = .clear
         
@@ -277,9 +302,15 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         botonFrecuentes.tintColor = .gray
         if textoPreditivo {
+            
+            if followThingDB.color != 8 {
+                botonFrecuentes.backgroundColor = coloresCategoria[Int(followThingDB.color)]
+                botonFrecuentes.tintColor = .white
+            }
+            else {
             botonFrecuentes.backgroundColor = azulBotonEditar
             botonFrecuentes.tintColor = .white
-            
+            }
         }
         
     }
@@ -309,6 +340,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             
             self.recuperaDatos()
             self.tablaSecundaria.reloadData()
+            self.ajustaSeparadorTabla()
         }
     }
     func envioFotosTeatro(arrayFotos: [UnFollowThing]) {
@@ -404,6 +436,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         tablaSecundaria.unblur()
         recuperaDatos()
         tablaSecundaria.reloadData()
+        ajustaSeparadorTabla()
         
     }
     func compruebaAlarmas(){
@@ -442,6 +475,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         }
         UserDefaults.standard.set(desdeHace, forKey: "tapDia")
         tablaSecundaria.reloadData()
+        ajustaSeparadorTabla()
         configuraCabecera()
     }
 //    MARK:- CONTENDOR INFORMATIVO
@@ -530,6 +564,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
        }
 //    MARK:- ACCIONES
     @objc func longPressFrecuente(gesture: UILongPressGestureRecognizer) {
+      
         if gesture.state == UIGestureRecognizer.State.began {
         
             botonFrecuentes.animadoVibracionMedio()
@@ -542,8 +577,18 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
                 
             }
             else {
-                botonFrecuentes.backgroundColor = azulBotonEditar
-                botonFrecuentes.tintColor = .white
+              
+                    
+                    if followThingDB.color != 8 {
+                        botonFrecuentes.backgroundColor = coloresCategoria[Int(followThingDB.color)]
+                        botonFrecuentes.tintColor = .white
+                    }
+                    else {
+                    botonFrecuentes.backgroundColor = azulBotonEditar
+                    botonFrecuentes.tintColor = .white
+                    }
+                
+             
                 textoPreditivo = true
             }
             UserDefaults.standard.setValue(textoPreditivo, forKey: "textoPreditivo")
@@ -565,6 +610,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             recuperaDatos()
             DispatchQueue.main.async {
                 self.tablaSecundaria.reloadData()
+                self.ajustaSeparadorTabla()
             }
         }
     }
@@ -682,6 +728,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     func actualizarDatosVisorUnico() {
         actualizarDatos()
         tablaSecundaria.reloadData()
+        ajustaSeparadorTabla()
     }
     //    MARK:- POPOVER
     
@@ -890,6 +937,10 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             
         }
         
+      
+    
+//        cell.contentView.borders(for: [.bottom], width: 0.2, color: .lightGray)
+    
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellSecundariaFotos", for: indexPath) as! TableViewCellSecundariaFotos
         
         cell.contentView.backgroundColor = .white
@@ -898,6 +949,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         let color2Btn02 = UIColor(red: 253/255, green: 253/255, blue: 253/255, alpha: 1.0)
         
         cell.contentView.grandienteVertical(color01: color1Btn02, color02: color2Btn02)
+             
         }
        
     }
@@ -924,6 +976,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
                 
             }
         }
+     
         let botonEditar = UIContextualAction(style: .normal, title: "Editar") { (action, view, handler) in
             
             self.editarAnotacion(unaAnotacion: indexPath)
@@ -934,10 +987,22 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         botonEditar.backgroundColor = azulBotonEditar
         botonBorrar.backgroundColor = rojoBotonEditar
-        let configuration = UISwipeActionsConfiguration(actions: [botonBorrar,botonEditar])
-        configuration.performsFirstActionWithFullSwipe = false
         
-        return configuration
+        if unFollowThingActual[indexPath.row].foto == nil {
+            
+            let configuration = UISwipeActionsConfiguration(actions: [botonBorrar,botonEditar])
+            configuration.performsFirstActionWithFullSwipe = false
+            return configuration
+            
+        }
+        else {
+            let configuration = UISwipeActionsConfiguration(actions: [botonBorrar])
+            configuration.performsFirstActionWithFullSwipe = false
+            return configuration
+            
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -1068,7 +1133,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         }
         
         self.unFollowThingActual = controller.fetchedObjects as! [UnFollowThing]
-        
+        ajustaSeparadorTabla()
     }
     
     //    MARK:- FUNCIONES SCROLLVIEW
@@ -1203,7 +1268,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
                 anotacionesFrecuentes.append(clave)
 //            }
         }
-       
+        if anotacionesFrecuentes.count > 0 {
         for busqueda in 1...anotacionesFrecuentes.count {
        
             for busquedaAnotacion in 1...unFTBDRecibido.count {
@@ -1216,7 +1281,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             }
         }
        
-        
+        }
     }
     func autoCompleteText( in textField: UITextField, using string: String, suggestionsArray: [String]) -> Bool {
       
@@ -1679,6 +1744,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         tablaSecundaria.scrollToRow(at: IndexPath(row: indiceEditarSeleccionado, section: 0), at: .middle, animated: true)
         
     }
+  
 
     func actualizarDatos() {
         
@@ -1791,8 +1857,18 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         } catch let error as NSError {
             print ("Error al recuperar",error)
         }
+        
+    }
+    func ajustaSeparadorTabla(){
+        if unFollowThingActual.count > 0 {
+            self.tablaSecundaria.separatorStyle = UITableViewCell.SeparatorStyle.singleLine}
+        else {
+            self.tablaSecundaria.separatorStyle = UITableViewCell.SeparatorStyle.none
+        }
     }
 }
+
+
 
 extension ViewController: UIPopoverPresentationControllerDelegate {
     

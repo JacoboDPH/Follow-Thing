@@ -119,17 +119,17 @@ class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegat
     }
     func buscaUltimaActualizacion(){
         
-        let conmutador = ConmutadorFireBaseCoreData.init()
-        
-        let ftBackup = conmutador.cargaEntidadPrincipalPorFechaSincronizacion()
-        
-        if ftBackup!.count > 0 {
-            for busca in 1...ftBackup!.count {
-                
-                print(ftBackup![busca-1].fechaUltimaSincronizacion,ftBackup![busca-1].titulo)
-                
-            }
-        }
+//        let conmutador = ConmutadorFireBaseCoreData.init()
+//        
+//        let ftBackup = conmutador.cargaEntidadPrincipalPorFechaSincronizacion()
+//        
+//        if ftBackup!.count > 0 {
+//            for busca in 1...ftBackup!.count {
+//                
+//                print(ftBackup![busca-1].fechaUltimaSincronizacion,ftBackup![busca-1].titulo)
+//                
+//            }
+//        }
     }
 //    MARK:- SEGUIMIENTO
     func compruebaSeguimiento(){
