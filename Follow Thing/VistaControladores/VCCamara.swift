@@ -57,11 +57,16 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         configuraBotonFrontal()
         configuraBotonFlash()
 
+        botonFlash.isHidden = true
+        botonCamaraFrontal.isHidden = true
+        
+        AVCaptureDevice.authorizeVideo(completion: { (status) in
+            self.configuraBotonCamara()
+            self.botonFlash.isHidden = false
+            self.botonCamaraFrontal.isHidden = false
+        })
       
-        if matrizFotos.count > 0 {
-            fotoPatronEncendido = UserDefaults.standard.bool(forKey: "fotoPatron")
-           compruebaEstadoBotonFotoPatron()
-        }
+        
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -69,14 +74,14 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         
         checkCameraPermission()
        
-        
-        AVCaptureDevice.authorizeVideo(completion: { (status) in
-            self.configuraBotonCamara()
-        })
-        
+       
+        navigationController?.navigationBar.backIndicatorImage = nil
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = nil
+
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.barTintColor = .clear
         
     }
     func configuraBotonCamara(){
@@ -101,7 +106,7 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
             self.etiquetaDiaSubtitulo.desiluminar()
             self.botonPatronFoto.iluminar()
             self.botonCamaraFrontal.iluminar()
-            self.botonFlash.iluminar()
+//            self.botonFlash.iluminar()
     
              })
         
@@ -113,10 +118,11 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
       
         super.viewWillDisappear(animated)
         
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        navigationController?.navigationBar.shadowImage = nil
+//        self.navigationController?.setNavigationBarHidden(false, animated: false)
+//        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+//        navigationController?.navigationBar.shadowImage = nil
         
+        navigationController?.navigationBar.isTranslucent = false
         view.layoutIfNeeded()
         
     }
@@ -140,6 +146,8 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         let altura = (UIScreen.main.bounds.size.height/2 )/2 - 20
         
         botonFlash.frame = CGRect(x: UIScreen.main.bounds.width - 50, y: altura, width: 40, height: 40)
+        
+        botonFlash.isHidden = true
     }
     func configuraBotonPatron(){
         
@@ -206,7 +214,7 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
       
         captureSession.sessionPreset = AVCaptureSession.Preset.photo
         
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera,.builtInDualWideCamera], mediaType: AVMediaType.video, position: .back)
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera,.builtInDualWideCamera,.builtInTelephotoCamera,.builtInTripleCamera,.builtInTrueDepthCamera,.builtInUltraWideCamera,.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
         
         for device in deviceDiscoverySession.devices {
             if device.position == .back {
@@ -253,11 +261,14 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
       
 //        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera], mediaType: AVMediaType.video, position: .back)
    
+         captureSession.sessionPreset = AVCaptureSession.Preset.photo
         
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera,.builtInDualCamera,.builtInDualWideCamera], mediaType: AVMediaType.video, position: .back)
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera,.builtInDualWideCamera,.builtInTelephotoCamera,.builtInTripleCamera,.builtInTrueDepthCamera,.builtInUltraWideCamera,.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
 
            guard let device = deviceDiscoverySession.devices.first
-               else {return}
+               else {
+            
+            return}
 
            if device.hasTorch {
                do {
@@ -284,6 +295,7 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
                }
            } else {
                print("Torch is not available")
+            botonFlash.isHidden = true
            }
     }
     //    MARK:- CAMARA FRONTAL
@@ -319,7 +331,8 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
            
     }
     func cameraWithPosition(_ position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        let deviceDescoverySession = AVCaptureDevice.DiscoverySession.init(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.unspecified)
+      
+        let deviceDescoverySession = AVCaptureDevice.DiscoverySession.init(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera,.builtInDualCamera,.builtInDualWideCamera,.builtInTelephotoCamera,.builtInTripleCamera,.builtInTrueDepthCamera,.builtInUltraWideCamera,.builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.unspecified)
 
         for device in deviceDescoverySession.devices {
             if device.position == position {
@@ -458,11 +471,11 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
 
     func alertUserCameraPermissionMustBeEnabled() {
 
-        let message = "Camera access is necessary to use Augemented Reality for this app.\n\nPlease go to Settings to allow access to the Camera.\n Please switch the button to the green color."
+        let message = "El acceso de cámara es necesario para tomar fotografías del objeto seguido. Las fotos tomadas permanecerán unicamente en el dispositivo"
 
-        let alert = UIAlertController (title: "Camera Access Required", message: message, preferredStyle: .alert)
+        let alert = UIAlertController (title: "Acceso de cámara requerido", message: message, preferredStyle: .alert)
 
-        let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+        let settingsAction = UIAlertAction(title: "Ir a Ajustes", style: .default, handler: { (action) in
 
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
 

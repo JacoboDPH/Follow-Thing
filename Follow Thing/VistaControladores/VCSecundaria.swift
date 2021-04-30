@@ -171,10 +171,9 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
         navigationItem.title = followThingDB?.titulo
-        
+    
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),NSAttributedString.Key.foregroundColor: UIColor.white]
         
-       
         }
         
       
@@ -362,24 +361,47 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         }
     }
     func envioFotoCollection(unFollow: UnFollowThing!) {
-       
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let VCVisorFotoUnica = storyboard.instantiateViewController(identifier: "VCVisorFotoUnica") as! VCVisorFotoUnica
-        
-        VCVisorFotoUnica.delegado = self
-        VCVisorFotoUnica.imageData = UIImage(data: unFollow.foto! as Data)
-            VCVisorFotoUnica.unFTDB = self.unFollowThingActual
-            VCVisorFotoUnica.followThingDesdeSec = self.followThingDB
-        VCVisorFotoUnica.fechaCreacionUnFTRecibido = unFollow.fechaCreacionUnFT
-        
-        VCVisorFotoUnica.modalTransitionStyle = .crossDissolve
-        VCVisorFotoUnica.modalPresentationStyle = .overCurrentContext
-        
-        
-        self.present(VCVisorFotoUnica, animated: true, completion: nil)
-        
+            //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            //        let VCVisorFotoUnica = storyboard.instantiateViewController(identifier: "VCVisorFotoUnica") as! VCVisorFotoUnica
+            //
+            //        VCVisorFotoUnica.delegado = self
+            //        VCVisorFotoUnica.imageData = UIImage(data: unFollow.foto! as Data)
+            //            VCVisorFotoUnica.unFTDB = self.unFollowThingActual
+            //            VCVisorFotoUnica.followThingDesdeSec = self.followThingDB
+            //        VCVisorFotoUnica.fechaCreacionUnFTRecibido = unFollow.fechaCreacionUnFT
+            //
+            //        VCVisorFotoUnica.modalTransitionStyle = .crossDissolve
+            //        VCVisorFotoUnica.modalPresentationStyle = .overCurrentContext
+            //
+            //
+            //        self.present(VCVisorFotoUnica, animated: true, completion: nil)
+            //
+            //
+            
+            //            let indexUnFT = unFollowThingActual[sender.view.tag]
+            
+            if unFollow.foto != nil {
+                
+                self.recuperaDatos()
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                
+                let VCVisorFotos  = storyboard.instantiateViewController(identifier: "VCVisorFotos") as! VCVisorFotos
+                
+                VCVisorFotos.followThing = self.followThingDB
+                VCVisorFotos.unFollowThings = self.unFollowThingActual
+                VCVisorFotos.unFollowThingObjetivo = unFollow
+                
+                VCVisorFotos.modalTransitionStyle = .crossDissolve
+                VCVisorFotos.modalPresentationStyle = .overCurrentContext
+                
+                self.present(VCVisorFotos, animated: true, completion: nil)
+                
+                
+            }
         }
     }
     

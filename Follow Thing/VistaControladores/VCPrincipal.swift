@@ -44,8 +44,9 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     @IBOutlet weak var indiceBoton09: UIView!
     
     @IBOutlet weak var botonFlotanteAñadir: UIButton!
+    @IBOutlet weak var etiquetaTutorial: UILabel!
     
-  
+    
     
 //    MARK: - VARIABLES
     lazy var refreshControl:UIRefreshControl = {
@@ -71,6 +72,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     var followThingTemporal:[FollowThing] = []
     
     var incluyeFrecuenteDesdeVCPrincipal:Bool = false
+    
+    var visualizacionTutorial:Int = 0
    
     override func viewDidLoad() {
         
@@ -141,14 +144,18 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:-90)
        
         
-        
         self.navigationController?.navigationBar.barTintColor = .white
                self.navigationController?.navigationBar.tintColor = UIColor.darkGray
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         
+        
         let ordenGuardado =  UserDefaults.standard.integer(forKey: "ordenGuardado")
+        
         if ordenGuardado == 2 {
+            
+            if followThing.count > 0 {
             tablaPrincipal.scrollToRow(at: IndexPath(row: 0, section: 0), at: .bottom, animated: true)
+            }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(estableceAlarmas), name: UIApplication.willResignActiveNotification, object: nil)
         
@@ -160,6 +167,11 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
            
             Alarmas.compruebaSiExisteAlarma()
         }
+        
+        iniciaTutorial()
+        
+        navigationController?.navigationBar.backIndicatorImage = nil
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = nil
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -207,8 +219,10 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     var coleccionColoresAbierto:Bool = false
     
     @objc private func tituloEsPulsado(_ sender: UIButton) {
-    tablaPrincipal.scrollToRow(at: IndexPath(row: 0, section: 0), at: .bottom, animated: true)
-        
+   
+        if followThing.count > 0 {
+        tablaPrincipal.scrollToRow(at: IndexPath(row: 0, section: 0), at: .bottom, animated: true)
+        }
         if coleccionColoresAbierto {
             
             coleccionColoresAbierto = false
@@ -290,6 +304,31 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         return .none
     }
 //    MARK:- CONFIGURADORES
+    func iniciaTutorial(){
+        
+        etiqTituloIndice.isHidden = true
+        etiquetaTutorial.alpha = 0
+        
+        if followThing.count == 0 {
+            
+            if visualizacionTutorial < 3 {
+                
+                tablaPrincipal.separatorStyle = .none
+                etiquetaTutorial.isHidden = false
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    
+                    self.etiquetaTutorial.iluminar()
+                    
+                }
+            }
+        }
+        else {
+            tablaPrincipal.separatorStyle = .singleLine
+        }
+        visualizacionTutorial = visualizacionTutorial + 1
+    }
+
     func configInicialBotonFlotante(){
        
         botonFlotanteAñadir.redondoCompleto()
@@ -316,8 +355,6 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             self.botonFlotanteAñadir.layer.removeAllAnimations()
             }
         }
-
-
     }
     func configColeccionColores(){
       
@@ -514,12 +551,15 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     
     func actualizaTablaDatos() {
         
+        if followThing.count > 0 {
+       
         view.unblur()
             
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             
             self.recargaDatos(conAnimacion: true)
             self.tablaPrincipal.reloadData()
+            self.iniciaTutorial()
         }
         colleccionColores.reloadData()
       
@@ -528,14 +568,21 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         self.tablaPrincipal.scrollToRow(at: topRow,
                                         at: .top,
                                         animated: true)
+      
+            
+        }
+        
+      
     }
     func actualizaTablaDatosPorId(id:UUID) {
+        
         
         view.unblur()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             
             self.recargaDatos(conAnimacion: true)
             self.tablaPrincipal.reloadData()
+            self.iniciaTutorial()
         }
         colleccionColores.reloadData()
         
@@ -554,6 +601,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
                 }
             }
         }
+        
     }
     func buscaCategoriaMasUsada(){
          categoriaMasUsada.removeAll()
@@ -570,9 +618,11 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     }
 //    MARK:- FUNCIONES INDICE LATERAL
     func mostrarIndiceLateral(){
+     
+        if followThing.count > 0 {
         self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:0)
         self.tablaPrincipal.ampliaReduce(tamaño: 0.8)
-        
+        }
     }
     
     @IBAction func swipeIndiceLateral(_ sender: Any) {
@@ -645,7 +695,11 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         DispatchQueue.main.async {
             self.recargaDatos(conAnimacion: true)
             self.tablaPrincipal.reloadData()
-            self.posicionaTablaEnCategoria(colorCategoria: Int16(indexPath.row))
+           
+            if self.followThing.count > 0 {self.posicionaTablaEnCategoria(colorCategoria: Int16(indexPath.row))}
+            
+            self.iniciaTutorial()
+            
         }
       
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellColeccionColores", for: indexPath) as! ColeccionColoresCell
@@ -962,21 +1016,33 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         
         let botonBorrar = UIContextualAction(style: .destructive, title: "Borrar") { (action, view, handler) in
             
-            let contexto = self.conexion()
+            let alert = UIAlertController(title: "Atención", message: "¿Quieres eliminar definitivamente este seguimiento?", preferredStyle: .alert)
             
-//            let pendienteBorrar = PendienteBorrarDB.init()
-//            
-//            pendienteBorrar.guardaPenditeneBorrar(idFollowThing: self.followThing[indexPath.row].id_FollowThing!, idFechaUnFT: self.followThing[indexPath.row].fechaCreacion!, borradoCompleto: true)
+            let ok = UIAlertAction(title: "Eliminar", style: .destructive, handler: { action in
+                
+                let contexto = self.conexion()
+                
+                let borrar = self.fetchResultController.object(at: indexPath)
+                contexto.delete(borrar)
+                
+                do{
+                    try contexto.save()
+                } catch {
+                    print("problemas al borrar")
+                }
+            })
+            alert.addAction(ok)
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                self.tablaPrincipal.reloadData()
+            })
+            alert.addAction(cancel)
+            DispatchQueue.main.async(execute: {
+                self.present(alert, animated: true)
+            })
             
             
-            let borrar = self.fetchResultController.object(at: indexPath)
-            contexto.delete(borrar)
             
-            do{
-                try contexto.save()
-            } catch {
-                print("problemas al borrar")
-            }
         }
         let botonEditar = UIContextualAction(style: .normal, title: "Editar") { (action, view, handler) in
             

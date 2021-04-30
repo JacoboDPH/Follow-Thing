@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera usage description</string>
+	<string>El uso de cámara es para tomar fotos del objeto seguido, dichas fotos permanencen guardadas en el dispositivo.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>

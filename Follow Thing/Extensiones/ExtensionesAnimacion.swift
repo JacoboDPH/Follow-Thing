@@ -69,10 +69,10 @@ var coloresCategoria:[UIColor] = [
 var coloresAnotacion:[UIColor] = [
 
     UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),
-    UIColor(red: 229/255, green: 22/255, blue: 22/255, alpha: 1),
-    UIColor(red: 229/255, green: 67/255, blue: 22/255, alpha: 1),
-    UIColor(red: 240/255, green: 86/255, blue: 9/255, alpha: 1),
-    UIColor(red: 240/255, green: 144/255, blue: 9/255, alpha: 1),
+    UIColor(red: 67/255, green: 67/255, blue: 67/255, alpha: 1),
+    UIColor(red: 104/255, green: 104/255, blue: 104/255, alpha: 1),
+    UIColor(red: 145/255, green: 145/255, blue: 145/255, alpha: 1),
+    UIColor(red: 190/255, green: 190/255, blue: 190/255, alpha: 1),
     
     UIColor(red: 240/255, green: 203/255, blue: 9/255, alpha: 1),
     UIColor(red: 150/255, green: 219/255, blue: 5/255, alpha: 1),
@@ -188,7 +188,9 @@ public extension UIView {
         let blufFX = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurFXView = UIVisualEffectView(effect: blufFX)
         blurFXView.frame = bounds
-       
+        
+        blurFXView.translatesAutoresizingMaskIntoConstraints = false
+
         blurFXView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         insertSubview(blurFXView, at: 0)
          
@@ -199,6 +201,8 @@ public extension UIView {
         let blufFX = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
         let blurFXView = UIVisualEffectView(effect: blufFX)
         blurFXView.frame = bounds
+        blurFXView.translatesAutoresizingMaskIntoConstraints = false
+
        
         blurFXView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         insertSubview(blurFXView, at: 0)
@@ -210,7 +214,9 @@ public extension UIView {
         let blufFX = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurFXView = UIVisualEffectView(effect: blufFX)
         blurFXView.frame = bounds
-       
+        
+        blurFXView.translatesAutoresizingMaskIntoConstraints = false
+
         blurFXView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         insertSubview(blurFXView, at: 0)
          

@@ -284,19 +284,19 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         
         if diasTranscurridos == 1 {
              etiquetaUltimaAnotacion.text = "La última vez fue hace \(diasDesdeUltimaVez) día"
-            let attrs1 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor.gray]
+            let attrs1 = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.gray]
             let attributedString1 = NSMutableAttributedString(string: "La última vez fue hace \(diasDesdeUltimaVez) día.", attributes:attrs1)
-            let attrs2 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]
-            let attributedString2 = NSMutableAttributedString(string:"Mostrar", attributes:attrs2)
+            let attrs2 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]
+            let attributedString2 = NSMutableAttributedString(string:" Mostrar agrupadas.", attributes:attrs2)
             attributedString1.append(attributedString2)
             etiquetaUltimaAnotacion.attributedText = attributedString1
         }
         else {
              etiquetaUltimaAnotacion.text = "La última vez fue hace \(diasDesdeUltimaVez) días"
-            let attrs1 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor.gray]
+            let attrs1 = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.gray]
             let attributedString1 = NSMutableAttributedString(string: "La última vez fue hace \(diasDesdeUltimaVez) días.", attributes:attrs1)
-            let attrs2 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]
-            let attributedString2 = NSMutableAttributedString(string:"Mostrar", attributes:attrs2)
+            let attrs2 = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 17), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]
+            let attributedString2 = NSMutableAttributedString(string:" Mostrar agrupadas.", attributes:attrs2)
             attributedString1.append(attributedString2)
             etiquetaUltimaAnotacion.attributedText = attributedString1
         }
