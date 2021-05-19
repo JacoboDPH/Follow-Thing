@@ -15,6 +15,7 @@
 		761CB22224F4A3E6004EFD9C /* VCResultadoCamara.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761CB22124F4A3E6004EFD9C /* VCResultadoCamara.swift */; };
 		761CB22424F65FA9004EFD9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 761CB22324F65FA9004EFD9C /* Main.storyboard */; };
 		76258ECC24A1204700EEADB0 /* CollectionViewCellColores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76258ECB24A1204700EEADB0 /* CollectionViewCellColores.swift */; };
+		762D4D5F263C81D3000AD476 /* ImagenesLaunchScreen in Resources */ = {isa = PBXBuildFile; fileRef = 762D4D5E263C81D3000AD476 /* ImagenesLaunchScreen */; };
 		762E73052611E71300A21792 /* UnFollowThingFireBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762E73042611E71300A21792 /* UnFollowThingFireBase.swift */; };
 		763347342565BE940092008F /* UnFollowDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763347332565BE940092008F /* UnFollowDB.swift */; };
 		764936D7251CA6DA00C5D2A1 /* Fuentes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764936D6251CA6DA00C5D2A1 /* Fuentes.swift */; };
@@ -70,6 +71,7 @@
 		761CB22124F4A3E6004EFD9C /* VCResultadoCamara.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCResultadoCamara.swift; sourceTree = "<group>"; };
 		761CB22324F65FA9004EFD9C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		76258ECB24A1204700EEADB0 /* CollectionViewCellColores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCellColores.swift; sourceTree = "<group>"; };
+		762D4D5E263C81D3000AD476 /* ImagenesLaunchScreen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ImagenesLaunchScreen; sourceTree = "<group>"; };
 		762E73042611E71300A21792 /* UnFollowThingFireBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UnFollowThingFireBase.swift; path = ../../../../UnFollowThingFireBase.swift; sourceTree = "<group>"; };
 		763347332565BE940092008F /* UnFollowDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnFollowDB.swift; sourceTree = "<group>"; };
 		764936D6251CA6DA00C5D2A1 /* Fuentes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fuentes.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		76664F1424FE69C6000BB5C7 /* RecursosGraficos */ = {
 			isa = PBXGroup;
 			children = (
+				762D4D5E263C81D3000AD476 /* ImagenesLaunchScreen */,
 				76664F1724FE69D7000BB5C7 /* ic_cancel_white_36dp.png */,
 				76664F1524FE69D7000BB5C7 /* ic_cancel_white_36pt_2x.png */,
 				76664F1624FE69D7000BB5C7 /* ic_cancel_white_36pt_3x.png */,
@@ -177,6 +180,7 @@
 		767CB48424999239005B1161 /* Follow Thing */ = {
 			isa = PBXGroup;
 			children = (
+				7683ABE0263C5BA600C80AC6 /* PantallaInicio */,
 				76AD97AB25F7C15E00D415F8 /* Modelos */,
 				76F31CBE2550125B00DA2108 /* ClaseDB */,
 				76664F1424FE69C6000BB5C7 /* RecursosGraficos */,
@@ -229,6 +233,13 @@
 				76880A0625482758008BADB9 /* Alarmas.swift */,
 			);
 			path = Extensiones;
+			sourceTree = "<group>";
+		};
+		7683ABE0263C5BA600C80AC6 /* PantallaInicio */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PantallaInicio;
 			sourceTree = "<group>";
 		};
 		76AD97AB25F7C15E00D415F8 /* Modelos */ = {
@@ -331,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				762D4D5F263C81D3000AD476 /* ImagenesLaunchScreen in Resources */,
 				76664F1A24FE69D7000BB5C7 /* ic_cancel_white_36dp.png in Resources */,
 				76664F1824FE69D7000BB5C7 /* ic_cancel_white_36pt_2x.png in Resources */,
 				76664F1924FE69D7000BB5C7 /* ic_cancel_white_36pt_3x.png in Resources */,
@@ -580,7 +592,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.JacoboDHP.Follow-Thing";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -606,7 +618,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.JacoboDHP.Follow-Thing";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

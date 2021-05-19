@@ -124,24 +124,30 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
     func determinaFrecuentes(){
         
         var diccionario = [String:Int]()
-
+        
+        if unFTBDRecibido.count > 0 {
+        
         for busqueda in 1...unFTBDRecibido.count {
             
             if unFTBDRecibido[busqueda-1].foto == nil {
                 
+                if unFTBDRecibido[busqueda-1].anotaciones == nil || unFTBDRecibido[busqueda-1].anotaciones == "" {
+                    break
+                }
+                
                 if diccionario.keys.contains(unFTBDRecibido[busqueda-1].anotaciones!)  {
                     
                     diccionario[unFTBDRecibido[busqueda-1].anotaciones!]! += 1
-
+                    
                 }
                 else
                 {
                     diccionario[unFTBDRecibido[busqueda-1].anotaciones!] = 1
-
+                    
                 }
             }
         }
-       
+        }
         for (clave,valor) in (Array(diccionario).sorted {$0.1 > $1.1}) {
             print("\(clave):\(valor)")
            
@@ -150,7 +156,9 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
 //            }
         }
        
-        for busqueda in 1...anotacionesFrecuentes.count {
+        if anotacionesFrecuentes.count > 0 {
+       
+            for busqueda in 1...anotacionesFrecuentes.count {
        
             for busquedaAnotacion in 1...unFTBDRecibido.count {
                 
@@ -161,7 +169,7 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
                 }
             }
         }
-       
+        }
         
     }
 //    MARK:- TABLA
@@ -205,6 +213,8 @@ class VCBotonMasFrecuente: UIViewController, UITableViewDelegate,UITableViewData
         
         if iniciaDesdeVCPrincipal {
         guardaAnotacionDesdeVCPrincipal(unFTGuardar: unFollowThingTop[indexPath.row])
+           
+            
             self.delegate?.actualizaDesdeFrecuentes()
             
         }

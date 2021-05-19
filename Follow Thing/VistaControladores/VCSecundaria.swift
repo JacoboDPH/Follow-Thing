@@ -87,6 +87,8 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     var anotacionesFrecuentes:[String] = []
     var unFollowThingTop:[UnFollowThing] = []
     
+    
+    
     lazy var refreshControl:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         
@@ -140,10 +142,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(recibeNotificacionDeActualizacion), name: Notification.Name("actualizaTablaUnFollowThing"), object: nil)
         
-     
-     
     }
-
 
     override func viewWillAppear(_ animated: Bool) {
         
@@ -175,18 +174,12 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 32),NSAttributedString.Key.foregroundColor: UIColor.white]
         
         }
-        
-      
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        sincronizarSubida()
-        
+         
         NotificationCenter.default.removeObserver(self)
         
-        
-      
     }
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert,.sound])
@@ -236,8 +229,10 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         btn01ContendorInfo.setTitleColor(.white, for: .normal)
         btn02ContenedorInfo.setTitleColor(.black, for: .normal)
         
+        
         btn02ContenedorInfo.setTitle("Aplicar seleccionado", for: .normal)
         btn01ContendorInfo.setTitle("Aplicar a todos", for: .normal)
+        
         
         btn02ContenedorInfo.redondear()
         btn01ContendorInfo.redondear()
@@ -364,25 +359,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             
-            //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            //        let VCVisorFotoUnica = storyboard.instantiateViewController(identifier: "VCVisorFotoUnica") as! VCVisorFotoUnica
-            //
-            //        VCVisorFotoUnica.delegado = self
-            //        VCVisorFotoUnica.imageData = UIImage(data: unFollow.foto! as Data)
-            //            VCVisorFotoUnica.unFTDB = self.unFollowThingActual
-            //            VCVisorFotoUnica.followThingDesdeSec = self.followThingDB
-            //        VCVisorFotoUnica.fechaCreacionUnFTRecibido = unFollow.fechaCreacionUnFT
-            //
-            //        VCVisorFotoUnica.modalTransitionStyle = .crossDissolve
-            //        VCVisorFotoUnica.modalPresentationStyle = .overCurrentContext
-            //
-            //
-            //        self.present(VCVisorFotoUnica, animated: true, completion: nil)
-            //
-            //
-            
-            //            let indexUnFT = unFollowThingActual[sender.view.tag]
-            
+        
             if unFollow.foto != nil {
                 
                 self.recuperaDatos()
@@ -487,7 +464,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
     }
 
     @IBAction func tapDia(_ sender: Any) {
-        
+        flip()
         etiquetaDiaVistaUno.animadoVibracionMedio()
         if !desdeHace {
             desdeHace = true
@@ -500,21 +477,23 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         ajustaSeparadorTabla()
         configuraCabecera()
     }
+
 //    MARK:- CONTENDOR INFORMATIVO
     func estadoContendorInformativo(mostrar:Bool){
         
         expandirContenedor(contenedor: contendorInformativo, abrir: mostrar,tamaño:160)
         
-        let color1:UIColor =  UIColor(red:
-                                        0/255, green: 166/255, blue: 215/255, alpha: 1.0)
-        let color2:UIColor =  UIColor(red: 0/255, green: 88/255, blue: 179/255, alpha: 1.0)
+//        let color1:UIColor =  UIColor(red:
+//                                        128/255, green: 128/255, blue: 128/255, alpha: 1.0)
+//        let color2:UIColor =  UIColor(red: 169/255, green: 169/255, blue: 169/255, alpha: 1.0)
         
         let color1Btn02 = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
         let color2Btn02 = UIColor(red: 253/255, green: 253/255, blue: 253/255, alpha: 1.0)
         
         btn02ContenedorInfo.grandienteVertical(color01: color1Btn02, color02: color2Btn02)
        
-        btn01ContendorInfo.grandienteVertical(color01: color1, color02: color2)
+        btn01ContendorInfo.backgroundColor = UIColor(red:
+                                                        128/255, green: 128/255, blue: 128/255, alpha: 1.0)
         if mostrar {
             contendorInformativo.iluminar()
            
@@ -645,6 +624,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         guardaEdicionMultiple()
         restableceEntradaTexto()
+       
         
     }
     @IBAction func tapAlarmas(_ sender: Any) {
@@ -727,8 +707,23 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         tablaSecundaria.reloadData()
     }
     //    MARK:- ANIMACIONES
+    
+    func flip() {
+        let transitionOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
+        
+   
+
+        UIView.transition(with: vistaUnoScroll, duration: 0.5, options: transitionOptions, animations: {
+//            self.firstView.isHidden = true
+        })
+//
+//        UIView.transition(with: secondView, duration: 1.0, options: transitionOptions, animations: {
+//            self.secondView.isHidden = false
+//        })
+    }
    
     //    MARK:- FUNCION ENTRE CONTROLADORES
+   
     @objc func recibeNotificacionDeActualizacion(){
     
      recuperaDatos()
@@ -745,6 +740,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             let VCCamara: VCCamara = segue.destination as! VCCamara
             VCCamara.unFTDB = unFollowThingActual
             VCCamara.followThingDesdeSec = followThingDB
+        
         }
     }
     func actualizarDatosVisorUnico() {
@@ -877,6 +873,14 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             cell.etiqHoraGuardada.text = horaAnotacion
             cell.etiqContenidoCelda.text = unFTIndex.anotaciones
 
+            if unFTIndex.anotaciones == nil || unFTIndex.anotaciones == "" {
+                cell.monitorActividad.startAnimating()
+                cell.monitorActividad.isHidden = false
+            }
+            else {
+                cell.monitorActividad.stopAnimating()
+                cell.monitorActividad.isHidden = true
+            }
             
             cell.etiqContenidoCelda.textColor = coloresAnotacion[
                 Int(unFTIndex.colorAnotacion)]
@@ -888,16 +892,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
           
             if editandoAnotacion {
                 stringAnotacion = anotacionesEditar
-                
-                if indexPath.row == indiceEditarSeleccionado {
-                  
-                    cell.contentView.borders(for: [.all], width: 0.5, color: .lightGray)
-                    let color1Btn02 = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
-                    let color2Btn02 = UIColor(red: 253/255, green: 253/255, blue: 253/255, alpha: 1.0)
-                    
-                    cell.contentView.grandienteVertical(color01: color1Btn02, color02: color2Btn02)
-                    
-                }
+               
             }
             if unFTIndex.colorAnotacion == 0 {
                 cell.etiqContenidoCelda.font = fuenteTextoAnotacionesCell
@@ -950,30 +945,40 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         
         if insertarNuevoElemento {
             
-            let animation = Animator.AnimationFactory.makeMoveUpWithBounce(rowHeight: cell.frame.height, duration: 1.0, delayFactor: 0.25)
-            
-            let animator = Animator(animation: animation)
-            animator.animate(cell: cell, at: indexPath, in: tableView)
-            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                
+                let animation = Animator.AnimationFactory.makeMoveUpWithBounce(rowHeight: cell.frame.height, duration: 1.0, delayFactor: 0.25)
+                
+                let animator = Animator(animation: animation)
+                animator.animate(cell: cell, at: indexPath, in: tableView)
+                
+                
+            }
             self.insertarNuevoElemento = false
-            
         }
-        
-      
-    
 //        cell.contentView.borders(for: [.bottom], width: 0.2, color: .lightGray)
     
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellSecundariaFotos", for: indexPath) as! TableViewCellSecundariaFotos
         
-        cell.contentView.backgroundColor = .white
         if editandoAnotacion {
-        let color1Btn02 = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
-        let color2Btn02 = UIColor(red: 253/255, green: 253/255, blue: 253/255, alpha: 1.0)
-        
-        cell.contentView.grandienteVertical(color01: color1Btn02, color02: color2Btn02)
-             
+         
+//
+//            if indexPath == indiceEditando {
+//
+//                cell.contentView.borders(for: [.all], width: 0.5, color: .lightGray)
+//                let color1Btn02 = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+//                let color2Btn02 = UIColor(red: 253/255, green: 253/255, blue: 253/255, alpha: 1.0)
+//
+//                cell.contentView.grandienteVertical(color01: color1Btn02, color02: color2Btn02)
+//
+//            }
+//            else {
+//                cell.contentView.backgroundColor = .white
+//            }
         }
-       
+        
+        cell.contentView.backgroundColor = .white
+         
     }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
@@ -1033,7 +1038,11 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
    
         let index = unFollowThingActual[indexPath.row]
         
-        if index.foto == nil {
+        if index.foto == nil  {
+            
+            if index.anotaciones == nil || index.anotaciones == "" {
+                return
+            }
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let VCAlarmaEstadisticaRepetir = storyboard.instantiateViewController(identifier: "VCAlarmaEstadisticaColor") as! VCAlarmaEstadisticaColor
@@ -1377,6 +1386,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
        
     }
     func restableceEntradaTexto(){
+       
         estadoBotonesEntradaTexto(modo: 0)
         textFieldVistaUno.text = ""
         expandirContenedor(contenedor: contenedorAlarmasInfo, abrir: false,tamaño: 0)
@@ -1478,8 +1488,16 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
               }
     }
     //    MARK:- SINCRONIZAR
+   
     @objc private func sincronizar(){
         
+        
+        
+        let conmutador01 = ConmutadorEntreRedYLocal.init()
+        
+         conmutador01.eliminaRepetidosUnFollowThing(unFT: unFollowThingActual)
+    
+      
         let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
         
         if sincronizacion {
@@ -1496,45 +1514,60 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
             }
             
             serialQueue.sync { [self] in
-                 print("Task 6")
+                print("Task 6")
                 
                 conmutador.descargaFotosdeFirebase(idFollowThing: followThingDB.id_FollowThing!.uuidString)
-            
+                
                 print("6 is on main thread: \(Thread.isMainThread)")
                 
-                  }
+            }
             serialQueue.sync {
                 
-                print("Task 7")
+                print("Task 7 ")
                 
                 conmutador.lanzadorCargaUNFTFirebase()
                 
                 print("7 is on main thread: \(Thread.isMainThread)")
                 
             }
-            
+            serialQueue.sync {
+                
+                print("Task 8 : Sube fotos a Firebase ")
+                
+                conmutador.lanzadorFotoFT()
+                
+                print("8 is on main thread: \(Thread.isMainThread)")
+                
+            }
+//            serialQueue.sync {
+//                print("Task 9 : Eliminación duplicados")
+//
+//               conmutador.eliminaRepetidosUnFollowThing(unFT: unFollowThingActual)
+//
+//                print("9 is on main thread: \(Thread.isMainThread)")
+//            }
         }
         else {
             refreshControl.endRefreshing()
         }
     }
-    private func sincronizarSubida(){
-        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
-        
-        if sincronizacion {
-            let conmutador = ConmutadorEntreRedYLocal.init()
-            
-            let serialQueue = DispatchQueue(label: "com.queueFollowThing.serial")
-            
-            serialQueue.sync {
-                print("Task 8")
-                
-                conmutador.lanzadorCargaUNFTFirebase()
-                
-                print("8 is on main thread: \(Thread.isMainThread)")
-            }
-        }
-    }
+//    private func sincronizarSubida(){
+//        let sincronizacion = UserDefaults.standard.bool(forKey: "sincronizacion")
+//
+//        if sincronizacion {
+//            let conmutador = ConmutadorEntreRedYLocal.init()
+//
+//            let serialQueue = DispatchQueue(label: "com.queueFollowThing.serial")
+//
+//            serialQueue.sync {
+//                print("Task 8")
+//
+//                conmutador.lanzadorCargaUNFTFirebase()
+//
+//                print("8 is on main thread: \(Thread.isMainThread)")
+//            }
+//        }
+//    }
     //    MARK:- ALARMA
     func borrarAlarmasUnFT(){
         
@@ -1706,6 +1739,8 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         estadoBotonesEntradaTexto(modo: 2)
         estadoContendorInformativo(mostrar: true)
         expandirContenedor(contenedor: scrollSecundaria, abrir: false,tamaño: 0)
+        
+      
      
     }
     func existenMasAlarmas(titulo:String)->Bool {
@@ -1764,6 +1799,7 @@ class VCSecundaria: UIViewController,UIScrollViewDelegate, UITableViewDelegate, 
         tablaSecundaria.reloadData()
         
         tablaSecundaria.scrollToRow(at: IndexPath(row: indiceEditarSeleccionado, section: 0), at: .middle, animated: true)
+        
         
     }
   

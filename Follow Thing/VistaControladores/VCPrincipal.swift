@@ -46,8 +46,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     @IBOutlet weak var botonFlotanteAñadir: UIButton!
     @IBOutlet weak var etiquetaTutorial: UILabel!
     
-    
-    
+   
 //    MARK: - VARIABLES
     lazy var refreshControl:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -71,13 +70,19 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     var alarmaTodasUnFT:[AlarmasUnFT] = []
     var followThingTemporal:[FollowThing] = []
     
-    var incluyeFrecuenteDesdeVCPrincipal:Bool = false
+    
+    var indiceSeleccionadoFrecuente:IndexPath?
     
     var visualizacionTutorial:Int = 0
-   
+  
+  
+    
+//    MARK:- CONSTANTES DE CLASE
+  
+    
     override func viewDidLoad() {
         
-        super.viewDidLoad()
+       super.viewDidLoad()
         
         self.hideKeyboardWhenTappedAround()
         
@@ -133,13 +138,17 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
                 
             }
         }
+        
+       
+        
     }
   
     override func viewWillAppear(_ animated: Bool) {
-        
+      
         super.viewWillAppear(animated)
         self.view.layoutIfNeeded()
         self.tablaPrincipal.reloadData()
+       
         self.tablaPrincipal.ampliaReduce(tamaño: 1.0)
         self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:-90)
        
@@ -220,9 +229,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     
     @objc private func tituloEsPulsado(_ sender: UIButton) {
    
-        if followThing.count > 0 {
-        tablaPrincipal.scrollToRow(at: IndexPath(row: 0, section: 0), at: .bottom, animated: true)
-        }
+       
         if coleccionColoresAbierto {
             
             coleccionColoresAbierto = false
@@ -249,8 +256,14 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         }
         
         DispatchQueue.main.async {
-            self.tablaPrincipal.reloadData()
+            
+            if self.followThing.count > 0 {
+                self.tablaPrincipal.scrollToRow(at: IndexPath(row: 0, section: 0), at: .bottom, animated: true)
+                self.tablaPrincipal.reloadData()
+            }
         }
+        
+       
         
     }
     
@@ -336,7 +349,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         botonFlotanteAñadir.sombreaVista()
         
         botonFlotanteAñadir.backgroundColor = .gray
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [self] in
+
         let pulse = CASpringAnimation(keyPath: "transform.scale")
             pulse.duration = 2.9
             pulse.fromValue = 1.0
@@ -354,6 +368,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             if self.followThing.count > 0 {
             self.botonFlotanteAñadir.layer.removeAllAnimations()
             }
+        }
         }
     }
     func configColeccionColores(){
@@ -494,12 +509,22 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
     }
    
     func actualizaDesdeFrecuentes() {
-        incluyeFrecuenteDesdeVCPrincipal = true
-              
-              view.unblur()
-              
-              recargaDatos(conAnimacion: false)
-              tablaPrincipal.reloadData()
+        
+        view.unblur()
+        
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
+            let cell = tablaPrincipal.cellForRow(at: indiceEditando)
+            if cell != nil {
+                cell!.superRebotar()
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.recargaDatos(conAnimacion: false)
+            self.tablaPrincipal.reloadData()
+        }
+       
     }
     func muestraSeleccionadorCategoria(){
         
@@ -508,6 +533,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         self.expandirContenedor(contenedor: self.contenedorColeccionColores, abrir: true, tamaño: 160)
         DispatchQueue.main.async {
             self.tablaPrincipal.reloadData()
+            
         }
     }
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController!) -> UIModalPresentationStyle {
@@ -547,6 +573,11 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         } catch let error as NSError {
         print("error al recuperar ",error)
         }
+        
+        if followThing.count > 0 {
+            etiquetaTutorial.isHidden = true
+        }
+        
     }
     
     func actualizaTablaDatos() {
@@ -558,6 +589,7 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             
             self.recargaDatos(conAnimacion: true)
+          
             self.tablaPrincipal.reloadData()
             self.iniciaTutorial()
         }
@@ -675,7 +707,8 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         self.mueveContenedorEjeX(contenedor:self.contenedorIndiceLateral,coordenadasX:-90)
         self.tablaPrincipal.ampliaReduce(tamaño: 1.0)
         }
-    
+
+   
     //    MARK:- COLECCION COLERES
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -863,6 +896,11 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
             let touchPoint = longPressGestureRecognizer.location(in: self.tablaPrincipal)
             if let indexPath = tablaPrincipal.indexPathForRow(at: touchPoint) {
             
+                let cell = tablaPrincipal.cellForRow(at: indexPath)
+                cell!.superRebotar()
+                
+                indiceSeleccionadoFrecuente = indexPath
+                
                 indiceEditando = indexPath
 
                 let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -962,33 +1000,20 @@ class VCPrincipal: UIViewController, NSFetchedResultsControllerDelegate,UITableV
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCellPrincipal
         
-        
-             
-        if animacionRecargaTabla  {
-            let animation = Animator.AnimationFactory.makeMoveUpWithBounce(rowHeight: cell.frame.height, duration: 1.0, delayFactor: 0.05)
-            let animator = Animator(animation: animation)
-            
-            animator.animate(cell: cell, at: indexPath, in: tableView)
-            
-            if indexPath.row == 4 {
-                animacionRecargaTabla = false
-            }
-        }
-        
-        if incluyeFrecuenteDesdeVCPrincipal {
-            
-            if indiceEditando.isEmpty == false {
-                
-                if indiceEditando.row == indexPath.row {
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
-                        cell.superRebotar()
-                    })
-                    
-                    incluyeFrecuenteDesdeVCPrincipal = false
-                }
-            }
-        }
+//        if animacionRecargaTabla  {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//               
+//            let animation = Animator.AnimationFactory.makeMoveUpWithBounce(rowHeight: cell.frame.height, duration: 2.0, delayFactor: 0.20)
+//            let animator = Animator(animation: animation)
+//            
+//            animator.animate(cell: cell, at: indexPath, in: tableView)
+//            
+//            if indexPath.row == 4 {
+//                self.animacionRecargaTabla = false
+//            }
+//            }
+//        }
+//        
         
     }
     

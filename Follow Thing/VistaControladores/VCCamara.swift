@@ -14,6 +14,10 @@ import CoreMotion
 
 
 class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresentationControllerDelegate, VCResultadoCamProtocolo {
+    func botonGuardarPulsado() {
+        performSegueToReturnBack()
+    }
+    
 
 //    MARK:- IBOULET
     
@@ -62,7 +66,7 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
         
         AVCaptureDevice.authorizeVideo(completion: { (status) in
             self.configuraBotonCamara()
-            self.botonFlash.isHidden = false
+            self.botonFlash.isHidden = true
             self.botonCamaraFrontal.isHidden = false
         })
       
@@ -186,27 +190,30 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
      
         let altura = heightForView(text: titulo, font: fuentePopoverGrande!, width: UIScreen.main.bounds.size.width-80)
         
-        let alturaSubtitulo = heightForView(text: Fechas.creaStringDias(numeroDia: dia, numeroDiaInvertido: 0, forzarDia: true), font: fuentePopoverGrandeSubtitulo!, width: UIScreen.main.bounds.size.width-80)
+//        let alturaSubtitulo = heightForView(text: Fechas.creaStringDias(numeroDia: dia, numeroDiaInvertido: 0, forzarDia: true), font: fuentePopoverGrandeSubtitulo!, width: UIScreen.main.bounds.size.width-80)
         
-        etiquetaDiaSubtitulo.font = fuentePopoverGrandeSubtitulo
-        etiquetaDia.font = fuentePopoverGrande
+//        etiquetaDiaSubtitulo.font = fuentePopoverGrandeSubtitulo
+//        etiquetaDia.font = fuentePopoverGrande
         
-        etiquetaDia.frame = CGRect(x: 40, y: 60, width: UIScreen.main.bounds.size.width-80, height: altura)
-        
-        etiquetaDiaSubtitulo.frame = CGRect(x: 40, y: 60+altura, width: UIScreen.main.bounds.size.width-80, height: alturaSubtitulo)
-       
-        etiquetaDia.textColor = .white
+//        etiquetaDia.frame = CGRect(x: 40, y: 60, width: UIScreen.main.bounds.size.width-80, height: altura)
+//
+//        etiquetaDiaSubtitulo.frame = CGRect(x: 40, y: 60+altura, width: UIScreen.main.bounds.size.width-80, height: alturaSubtitulo)
+//
+       etiquetaDia.textColor = .white
         etiquetaDiaSubtitulo.textColor = .white
+//
+//        etiquetaDia.adjustsFontSizeToFitWidth = true
+//        etiquetaDia.minimumScaleFactor = 0.5
+//        etiquetaDia.lineBreakMode = .byClipping
         
-        etiquetaDia.adjustsFontSizeToFitWidth = true
-        etiquetaDia.minimumScaleFactor = 0.5
-        etiquetaDia.lineBreakMode = .byClipping
-        
-        etiquetaDia.numberOfLines = 0
-  
+//        etiquetaDia.numberOfLines = 0
+//
         etiquetaDia.text =  titulo
         etiquetaDiaSubtitulo.text = Fechas.creaStringDias(numeroDia: dia, numeroDiaInvertido: 0, forzarDia: true)
         
+        etiquetaDia.contentMode = .scaleToFill
+        etiquetaDia.adjustsFontSizeToFitWidth = true
+        etiquetaDia.minimumScaleFactor = 0.25
         etiquetaDia.sombreaVista()
         etiquetaDiaSubtitulo.sombreaVista()
     }
@@ -446,6 +453,11 @@ class VCCamara: UIViewController, AVCapturePhotoCaptureDelegate, UIPopoverPresen
                     print("access granted")
                     DispatchQueue.main.async { [weak self] in
                         self?.startSceneViewSession()
+                        
+                            self?.configuraBotonCamara()
+                            self?.botonFlash.isHidden = true
+                            self?.botonCamaraFrontal.isHidden = false
+                     
                     }
 
                 } else {

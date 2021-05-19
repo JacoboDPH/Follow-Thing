@@ -173,7 +173,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         pickerAlarma.delegate = self
         
         etiquetaTituloAlarma.font = fuenteTituloContendores
-        etiquetaTituloAlarma.text = "Recordar en..."
+        etiquetaTituloAlarma.text = "Recordar en ..."
         etiquetaTituloAlarma.backgroundColor = .clear
         etiquetaTituloAlarma.textColor = .darkGray
         
@@ -209,7 +209,7 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
                 
         etiquetaTituloColor.font = fuenteTituloContendores
         
-        etiquetaTituloColor.text = "Color anotación..."
+        etiquetaTituloColor.text = "Color anotación ..."
         etiquetaTituloColor.backgroundColor = .clear
         etiquetaTituloColor.textColor = .darkGray
         
@@ -233,22 +233,39 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         
        
         etiquetaTituloEstadistica.font = fuenteTituloContendores
-        etiquetaTituloEstadistica.text = "Estadísticas..."
+        etiquetaTituloEstadistica.text = "Estadísticas ..."
         etiquetaTituloEstadistica.backgroundColor = .clear
         etiquetaTituloEstadistica.textColor = .darkGray
 
 //        Promedio
         
-        let diaTotal = Fechas.calculaDiasEntreDosFechas(start: followThing.fechaCreacion!, end: Date())
-        let diaUltimo = Fechas.calculaDiasEntreDosFechas(start: followThing.fechaCreacion!, end: unFTEstadistica.first!.fechaCreacionUnFT!)
-       
-        let promedio = CGFloat(unFTEstadistica.count) / CGFloat((diaTotal + 1))
-        let promedioUltimo = CGFloat(unFTEstadistica.count) / CGFloat(diaUltimo+1)
-      
-        let promedioS = String(format: "%01.2f", promedio)
-        let promedioUltimoS = String(format: "%01.2f", promedioUltimo)
+//        let diaTotal = Fechas.calculaDiasEntreDosFechas(start: followThing.fechaCreacion!, end: Date())
+//        let diaUltimo = Fechas.calculaDiasEntreDosFechas(start: followThing.fechaCreacion!, end: unFTEstadistica.first!.fechaCreacionUnFT!)
+//       
+//        let promedio = CGFloat(unFTEstadistica.count) / CGFloat((diaTotal + 1))
+//        let promedioUltimo = CGFloat(unFTEstadistica.count) / CGFloat(diaUltimo+1)
+//      
+//        let promedioS = String(format: "%01.2f", promedio)
+//        let promedioUltimoS = String(format: "%01.2f", promedioUltimo)
         
-        etiquetaPromedio.text = "El impacto promedio en los \(diaTotal) días es del " + promedioS + "%\nEl impacto hasta la última entrada es \(promedioUltimoS)%"
+        
+//        etiquetaPromedio.text = "El impacto promedio en los \(diaTotal) días es del " + promedioS + "%.\nEl impacto hasta la última entrada es \(promedioUltimoS)%."
+        
+//        PROMEDIO
+        
+        var stringIntervalo = "No existen intervalos en esta anotación."
+       
+        if unFTEstadistica.count > 1 {
+            
+            stringIntervalo = "El intervalo de esta anotación es de \(calculaIntervalos()[0]) días"
+        }
+        if unFTEstadistica.count > 2 {
+            
+            
+           stringIntervalo = "La media de esta anotación está en \(calculaIntervalos()[1]) días, el máximo intervalo es de \(calculaIntervalos()[0]) días y el mínimo \(calculaIntervalos()[2])."
+        }
+        
+        etiquetaPromedio.text = stringIntervalo
         
         etiquetaPromedio.textColor = .gray
         etiquetaVecesRepetido.textColor = .gray
@@ -267,13 +284,13 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
       
 //        Veces repetido
         
+       
         let diasTranscurridos = Fechas.calculaDiasEntreDosFechas(start: followThing.fechaCreacion!, end: Date())
         if unFTEstadistica.count == 1 {
-             etiquetaVecesRepetido.text = "\(unFTEstadistica.count) vez en \(diasTranscurridos) días"
+             etiquetaVecesRepetido.text = "\(unFTEstadistica.count) vez en \(diasTranscurridos) días. \n"
         }
         else {
-             etiquetaVecesRepetido.text = "\(unFTEstadistica.count) veces en \(diasTranscurridos) días"
-        }
+             etiquetaVecesRepetido.text = "\(unFTEstadistica.count) veces en \(diasTranscurridos) días. \n"        }
 //      Ultima vez
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(VCAlarmaEstadisticaColor.tapFunction))
@@ -682,6 +699,45 @@ class VCAlarmaEstadisticaColor: UIViewController, UICollectionViewDelegate, UICo
         
     
     //    MARK:- ESTADISTICA
+    
+    func calculaIntervalos()->[Int]{
+        
+        
+        var resultados = [Int]()
+        
+        var intervalosLista = [Int]()
+        
+        var intervaloMedia:Int = 0
+        
+        let primerIntervaloFechaActual = Fechas.calculaDiasEntreDosFechas(start: unFTEstadistica[0].fechaCreacionUnFT!, end: Date())
+        
+        intervalosLista.append(primerIntervaloFechaActual)
+        
+        for intervalos in 1...unFTEstadistica.count {
+            
+            if intervalos != unFTEstadistica.count {
+                
+                let diaIntervalo = Fechas.calculaDiasEntreDosFechas(start:  unFTEstadistica[intervalos].fechaCreacionUnFT!, end:  unFTEstadistica[intervalos-1].fechaCreacionUnFT!)
+                
+                print(" Dias de diferencia :",diaIntervalo," el día :",Fechas.calculaDiasEntreDosFechas(start:followThing.fechaCreacion! , end: unFTEstadistica[intervalos-1].fechaCreacionUnFT!))
+                
+                intervalosLista.append(diaIntervalo)
+                
+                intervaloMedia = intervaloMedia + diaIntervalo
+                
+            }
+        }
+        print(" Dias de media : ",intervaloMedia/unFTEstadistica.count+1)
+        
+       let maximo = intervalosLista.max() ?? 0
+       
+        let minimo = intervalosLista.min() ?? 0
+        
+        resultados = [maximo,intervaloMedia/unFTEstadistica.count,minimo]
+        
+        return resultados
+    }
+    
     @objc
         func tapFunction(sender:UITapGestureRecognizer) {
           

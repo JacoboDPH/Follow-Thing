@@ -18,7 +18,8 @@ class TableViewCellSecundarfia: UITableViewCell {
     
     @IBOutlet var contendorExpansible: UIView!
     
-   
+    @IBOutlet weak var monitorActividad: UIActivityIndicatorView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

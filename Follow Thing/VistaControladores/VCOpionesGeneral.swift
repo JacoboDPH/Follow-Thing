@@ -31,6 +31,8 @@ class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegat
    
     @IBOutlet weak var switchCategoria: UISwitch!
     @IBOutlet weak var switchIndice: UISwitch!
+   
+    @IBOutlet weak var etiquetaVersion: UILabel!
     
 
     
@@ -43,6 +45,8 @@ class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegat
         comprobarLogin()
         compruebaSeguimiento()
         compruebaPantallaPrincipal()
+        
+        configuraEtiquetaVersion()
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -215,6 +219,12 @@ class VCOpionesGeneral: UIViewController, UIPopoverPresentationControllerDelegat
             UserDefaults.standard.set(false, forKey: "mostrar_Indice_Inicio")
             
         }
+    }
+//    MARK: - CONTENEDOR VERSION
+    func configuraEtiquetaVersion(){
+        
+        etiquetaVersion.text = "Follow Things 2021 \n Versión 1.2"
+        
     }
     public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
          

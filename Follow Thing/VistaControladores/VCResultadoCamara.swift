@@ -11,6 +11,7 @@ import CoreData
 
 protocol VCResultadoCamProtocolo {
     func cierraPopover()
+    func botonGuardarPulsado()
 }
 class VCResultadoCamara: UIViewController {
     
@@ -60,6 +61,7 @@ class VCResultadoCamara: UIViewController {
     
     @IBAction func accionBotonGuardar(_ sender: Any) {
         guardarFoto()
+        delegado?.botonGuardarPulsado()
     }
     
     //MARK:- CONFIGURACION VISTAS
